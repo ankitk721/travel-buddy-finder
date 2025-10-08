@@ -12,41 +12,73 @@ export default function SignUp() {
   const [name, setName] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState(false)
 
   const handleSignUp = async (e: React.FormEvent) => {
-  e.preventDefault()
-  setLoading(true)
-  setError('')
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+    setSuccess(false)
 
-  // Sign up the user - profile will be created automatically by trigger!
-  const { data: authData, error: authError } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: {
-        name: name, // This gets stored in auth.users metadata
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          name: name,
+        }
+      }
+    })
+
+    if (authError) {
+      setError(authError.message)
+      setLoading(false)
+      return
+    }
+
+    if (authData.user) {
+      await supabase
+        .from('profiles')
+        .update({ name: name })
+        .eq('id', authData.user.id)
+
+      if (authData.session) {
+        // Session established immediately - redirect
+        setTimeout(() => {
+          router.push('/')
+          router.refresh()
+        }, 500)
+      } else {
+        // Email confirmation required
+        setSuccess(true)
+        setLoading(false)
       }
     }
-  })
-
-  if (authError) {
-    setError(authError.message)
-    setLoading(false)
-    return
   }
 
-  // Update the profile with the name (trigger only handles email)
-  if (authData.user) {
-    await supabase
-      .from('profiles')
-      .update({ name: name })
-      .eq('id', authData.user.id)
+  // If signup successful and waiting for email confirmation
+  if (success) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
+        <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-md text-center">
+          <div className="text-6xl mb-4">✅</div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Check Your Email</h1>
+          <p className="text-gray-600 mb-6">
+            We sent a confirmation email to <strong>{email}</strong>
+          </p>
+          <p className="text-sm text-gray-500 mb-6">
+            Click the link in the email to confirm your account, then come back and log in.
+          </p>
+          <Link
+            href="/login"
+            className="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 font-medium"
+          >
+            Go to Login
+          </Link>
+        </div>
+      </div>
+    )
   }
-
-  // Success - redirect to home
-  router.push('/')
-  router.refresh()
-}
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
