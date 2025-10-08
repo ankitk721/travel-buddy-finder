@@ -2,41 +2,129 @@
 
 import { supabase } from '@/lib/supabase'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 export default function Home() {
-  const [connected, setConnected] = useState(false)
+  const router = useRouter()
+  const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const checkConnection = async () => {
-      const { data, error } = await supabase.from('trips').select('count')
-      if (!error) setConnected(true)
+    // Check if user is logged in
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      setUser(user)
       setLoading(false)
     }
-    checkConnection()
+    checkUser()
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => subscription.unsubscribe()
   }, [])
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="bg-white rounded-lg shadow-xl p-12 max-w-md text-center">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          Travel Buddy Finder
-        </h1>
-        <p className="text-lg text-gray-700 mb-8">
-          Helping elderly parents find travel companions
-        </p>
-        
-        <div className="border-t pt-6">
-          <p className="text-sm text-gray-600 mb-2">Database Status:</p>
-          {loading ? (
-            <p className="text-lg text-gray-500">Checking...</p>
-          ) : connected ? (
-            <p className="text-2xl font-semibold text-green-600">✅ Connected!</p>
-          ) : (
-            <p className="text-2xl font-semibold text-red-600">❌ Not Connected</p>
-          )}
-        </div>
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    router.refresh()
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+        <p className="text-xl text-gray-600">Loading...</p>
       </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      {/* Navigation */}
+      <nav className="bg-white shadow-sm">
+        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-indigo-600">Travel Buddy Finder</h1>
+          <div className="flex gap-4">
+            {user ? (
+              <>
+                <span className="text-gray-700">Hello, {user.email}</span>
+                <button
+                  onClick={handleLogout}
+                  className="text-indigo-600 hover:text-indigo-800 font-medium"
+                >
+                  Log Out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link href="/login" className="text-indigo-600 hover:text-indigo-800 font-medium">
+                  Log In
+                </Link>
+                <Link href="/signup" className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 font-medium">
+                  Sign Up
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <main className="max-w-4xl mx-auto px-4 py-16 text-center">
+        <h2 className="text-5xl font-bold text-gray-900 mb-6">
+          Help Elderly Parents Find Travel Companions
+        </h2>
+        <p className="text-xl text-gray-700 mb-8">
+          Connect with other families whose parents are traveling on the same flights. 
+          Never let your parents navigate airports alone.
+        </p>
+
+        {user ? (
+          <div className="space-y-4">
+            <Link
+              href="/trips/new"
+              className="inline-block bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition"
+            >
+              Post a Trip
+            </Link>
+            <br />
+            <Link
+              href="/trips"
+              className="inline-block text-indigo-600 hover:text-indigo-800 font-medium"
+            >
+              Browse Available Companions →
+            </Link>
+          </div>
+        ) : (
+          <Link
+            href="/signup"
+            className="inline-block bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition"
+          >
+            Get Started - It's Free
+          </Link>
+        )}
+
+        {/* Features */}
+        <div className="grid md:grid-cols-3 gap-8 mt-16">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="text-4xl mb-4">✈️</div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">Same Flight Matching</h3>
+            <p className="text-gray-600">Find companions on the exact same flight or similar routes</p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="text-4xl mb-4">🤝</div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">Safe Community</h3>
+            <p className="text-gray-600">Connect with verified families in similar situations</p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="text-4xl mb-4">💬</div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">Direct Communication</h3>
+            <p className="text-gray-600">Message and coordinate before the travel date</p>
+          </div>
+        </div>
+      </main>
     </div>
   )
 }
