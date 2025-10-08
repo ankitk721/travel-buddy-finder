@@ -121,9 +121,6 @@ export default function NewTrip() {
       <Navigation />
       <nav className="bg-white shadow-sm">
         <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-indigo-600">
-            Travel Buddy Finder
-          </Link>
           <Link href="/trips" className="text-indigo-600 hover:text-indigo-800 font-medium">
             ← Back to Trips
           </Link>

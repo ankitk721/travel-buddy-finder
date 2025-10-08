@@ -157,21 +157,6 @@ export default function MyTripsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <Navigation />
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-indigo-600">
-            Travel Buddy Finder
-          </Link>
-          <div className="flex gap-4">
-            <Link href="/trips" className="text-indigo-600 hover:text-indigo-800 font-medium">
-              Browse Trips
-            </Link>
-            <Link href="/trips/new" className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 font-medium">
-              + Post Trip
-            </Link>
-          </div>
-        </div>
-      </nav>
 
       <main className="max-w-5xl mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold text-gray-900 mb-2">My Posted Trips</h1>
