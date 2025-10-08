@@ -4,6 +4,8 @@ import { supabase } from '@/lib/supabase'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Navigation from '@/components/Navigation'
+
 
 export default function Home() {
   const router = useRouter()
@@ -43,37 +45,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Navigation */}
-      // In app/page.tsx, update the nav section:
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-indigo-600">Travel Buddy Finder</h1>
-          <div className="flex gap-4">
-            {user ? (
-              <>
-                <Link href="/my-trips" className="text-gray-700 hover:text-gray-900 font-medium">
-                  My Trips
-                </Link>
-                <span className="text-gray-700">Hello, {user.email}</span>
-                <button
-                  onClick={handleLogout}
-                  className="text-indigo-600 hover:text-indigo-800 font-medium"
-                >
-                  Log Out
-                </button>
-              </>
-            ) : (
-              <>
-                <Link href="/login" className="text-indigo-600 hover:text-indigo-800 font-medium">
-                  Log In
-                </Link>
-                <Link href="/signup" className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 font-medium">
-                  Sign Up
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      </nav>
+      <Navigation />
 
       {/* Hero Section */}
       <main className="max-w-4xl mx-auto px-4 py-16 text-center">
