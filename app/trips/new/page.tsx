@@ -12,13 +12,21 @@ export default function NewTrip() {
   const [error, setError] = useState('')
   
   const [formData, setFormData] = useState({
-    parent_name: '',
-    parent_age: '',
+    my_name: '',
+    my_phone: '',
+    traveler_name: '',
+    traveler_age: '',
+    traveler_languages: [] as string[],
     origin: '',
     destination: '',
+    booking_status: 'flexible',
     flight_date: '',
     flight_number: '',
     airline: '',
+    date_range_start: '',
+    date_range_end: '',
+    companion_type: 'fellow_parent',
+    needs_help_with: [] as string[],
     notes: ''
   })
 
@@ -39,18 +47,39 @@ export default function NewTrip() {
     setLoading(true)
     setError('')
 
+    // Validate based on booking status
+    if (formData.booking_status === 'confirmed' && !formData.flight_date) {
+      setError('Flight date is required for confirmed bookings')
+      setLoading(false)
+      return
+    }
+
+    if (formData.booking_status === 'flexible' && (!formData.date_range_start || !formData.date_range_end)) {
+      setError('Date range is required for flexible bookings')
+      setLoading(false)
+      return
+    }
+
     const { error: insertError } = await supabase
       .from('trips')
       .insert([
         {
           user_id: user.id,
-          parent_name: formData.parent_name,
-          parent_age: parseInt(formData.parent_age) || null,
+          my_name: formData.my_name,
+          my_phone: formData.my_phone || null,
+          traveler_name: formData.traveler_name,
+          traveler_age: parseInt(formData.traveler_age) || null,
+          traveler_languages: formData.traveler_languages.length > 0 ? formData.traveler_languages : null,
           origin: formData.origin,
           destination: formData.destination,
-          flight_date: formData.flight_date,
+          booking_status: formData.booking_status,
+          flight_date: formData.booking_status === 'confirmed' ? formData.flight_date : null,
           flight_number: formData.flight_number || null,
           airline: formData.airline || null,
+          date_range_start: formData.booking_status === 'flexible' ? formData.date_range_start : null,
+          date_range_end: formData.booking_status === 'flexible' ? formData.date_range_end : null,
+          companion_type: formData.companion_type,
+          needs_help_with: formData.needs_help_with.length > 0 ? formData.needs_help_with : null,
           notes: formData.notes || null,
           status: 'active'
         }
@@ -62,12 +91,20 @@ export default function NewTrip() {
       return
     }
 
-    // Success - redirect to trips list
     router.push('/trips')
   }
 
-  const handleChange = (field: string, value: string) => {
+  const handleChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }))
+  }
+
+  const toggleArrayItem = (field: 'traveler_languages' | 'needs_help_with', value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: prev[field].includes(value)
+        ? prev[field].filter(item => item !== value)
+        : [...prev[field], value]
+    }))
   }
 
   if (!user) {
@@ -80,7 +117,6 @@ export default function NewTrip() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      {/* Navigation */}
       <nav className="bg-white shadow-sm">
         <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold text-indigo-600">
@@ -94,9 +130,9 @@ export default function NewTrip() {
 
       <main className="max-w-2xl mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-xl p-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Post a Trip</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Find a Travel Companion</h1>
           <p className="text-gray-600 mb-6">
-            Share your parent's travel details to find companions on the same route
+            Help your parent find a companion for their journey
           </p>
 
           {error && (
@@ -106,22 +142,59 @@ export default function NewTrip() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Parent Info */}
+            {/* Your Info */}
+            <div className="border-b pb-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">Your Information</h2>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Your Name *
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.my_name}
+                    onChange={(e) => handleChange('my_name', e.target.value)}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                    placeholder="Your full name"
+                  />
+                  <p className="text-sm text-gray-500 mt-1">
+                    This will be shared with potential companions
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Your Phone Number (optional)
+                  </label>
+                  <input
+                    type="tel"
+                    value={formData.my_phone}
+                    onChange={(e) => handleChange('my_phone', e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                    placeholder="+1 (555) 123-4567"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Traveler Info */}
             <div className="border-b pb-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Traveler Information</h2>
               
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Parent's Name *
+                    Traveler's Name *
                   </label>
                   <input
                     type="text"
-                    value={formData.parent_name}
-                    onChange={(e) => handleChange('parent_name', e.target.value)}
+                    value={formData.traveler_name}
+                    onChange={(e) => handleChange('traveler_name', e.target.value)}
                     required
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
-                    placeholder="e.g., Rajesh Kumar"
+                    placeholder="e.g., Mom, Dad, Rajesh Kumar"
                   />
                 </div>
 
@@ -131,25 +204,47 @@ export default function NewTrip() {
                   </label>
                   <input
                     type="number"
-                    value={formData.parent_age}
-                    onChange={(e) => handleChange('parent_age', e.target.value)}
+                    value={formData.traveler_age}
+                    onChange={(e) => handleChange('traveler_age', e.target.value)}
                     min="18"
                     max="120"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                     placeholder="e.g., 68"
                   />
                 </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Languages Spoken
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {['Hindi', 'English', 'Tamil', 'Telugu', 'Gujarati', 'Punjabi', 'Bengali', 'Marathi'].map(lang => (
+                      <button
+                        key={lang}
+                        type="button"
+                        onClick={() => toggleArrayItem('traveler_languages', lang)}
+                        className={`px-4 py-2 rounded-full text-sm font-medium transition ${
+                          formData.traveler_languages.includes(lang)
+                            ? 'bg-indigo-600 text-white'
+                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        }`}
+                      >
+                        {lang}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Flight Info */}
+            {/* Flight Route */}
             <div className="border-b pb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Flight Details</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">Travel Route</h2>
               
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Origin (From) *
+                    From (Origin) *
                   </label>
                   <input
                     type="text"
@@ -157,13 +252,13 @@ export default function NewTrip() {
                     onChange={(e) => handleChange('origin', e.target.value)}
                     required
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
-                    placeholder="e.g., Delhi (DEL) or Mumbai"
+                    placeholder="e.g., Delhi, Mumbai, Bangalore"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Destination (To) *
+                    To (Destination) *
                   </label>
                   <input
                     type="text"
@@ -171,69 +266,217 @@ export default function NewTrip() {
                     onChange={(e) => handleChange('destination', e.target.value)}
                     required
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
-                    placeholder="e.g., San Francisco (SFO) or NYC"
-                  />
-                </div>
-              </div>
-
-              <div className="mt-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Flight Date *
-                </label>
-                <input
-                  type="date"
-                  value={formData.flight_date}
-                  onChange={(e) => handleChange('flight_date', e.target.value)}
-                  required
-                  min={new Date().toISOString().split('T')[0]}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
-                />
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-4 mt-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Airline (optional)
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.airline}
-                    onChange={(e) => handleChange('airline', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
-                    placeholder="e.g., Air India, United"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Flight Number (optional)
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.flight_number}
-                    onChange={(e) => handleChange('flight_number', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
-                    placeholder="e.g., AI 173"
+                    placeholder="e.g., SFO, NYC, London"
                   />
                 </div>
               </div>
             </div>
 
-            {/* Additional Notes */}
+            {/* Booking Status */}
+            <div className="border-b pb-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">Booking Status</h2>
+              
+              <div className="space-y-4">
+                <div className="flex gap-4">
+                  <label className="flex items-center">
+                    <input
+                      type="radio"
+                      name="booking_status"
+                      value="confirmed"
+                      checked={formData.booking_status === 'confirmed'}
+                      onChange={(e) => handleChange('booking_status', e.target.value)}
+                      className="mr-2"
+                    />
+                    <span className="text-gray-700">Flight Already Booked</span>
+                  </label>
+                  <label className="flex items-center">
+                    <input
+                      type="radio"
+                      name="booking_status"
+                      value="flexible"
+                      checked={formData.booking_status === 'flexible'}
+                      onChange={(e) => handleChange('booking_status', e.target.value)}
+                      className="mr-2"
+                    />
+                    <span className="text-gray-700">Flexible Dates (Not Booked Yet)</span>
+                  </label>
+                </div>
+
+                {formData.booking_status === 'confirmed' && (
+                  <div className="space-y-4 bg-blue-50 p-4 rounded-lg">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Flight Date *
+                      </label>
+                      <input
+                        type="date"
+                        value={formData.flight_date}
+                        onChange={(e) => handleChange('flight_date', e.target.value)}
+                        min={new Date().toISOString().split('T')[0]}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                      />
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Airline
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.airline}
+                          onChange={(e) => handleChange('airline', e.target.value)}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                          placeholder="e.g., Air India, United"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Flight Number
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.flight_number}
+                          onChange={(e) => handleChange('flight_number', e.target.value)}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                          placeholder="e.g., AI 173"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {formData.booking_status === 'flexible' && (
+                  <div className="space-y-4 bg-green-50 p-4 rounded-lg">
+                    <p className="text-sm text-gray-700">
+                      We'll show you who else is traveling on similar dates so you can coordinate bookings
+                    </p>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Earliest Date *
+                        </label>
+                        <input
+                          type="date"
+                          value={formData.date_range_start}
+                          onChange={(e) => handleChange('date_range_start', e.target.value)}
+                          min={new Date().toISOString().split('T')[0]}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Latest Date *
+                        </label>
+                        <input
+                          type="date"
+                          value={formData.date_range_end}
+                          onChange={(e) => handleChange('date_range_end', e.target.value)}
+                          min={formData.date_range_start || new Date().toISOString().split('T')[0]}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Companion Type */}
+            <div className="border-b pb-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">I am...</h2>
+              
+              <div className="space-y-3">
+                <label className="flex items-start p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                  <input
+                    type="radio"
+                    name="companion_type"
+                    value="fellow_parent"
+                    checked={formData.companion_type === 'fellow_parent'}
+                    onChange={(e) => handleChange('companion_type', e.target.value)}
+                    className="mt-1 mr-3"
+                  />
+                  <div>
+                    <span className="font-medium text-gray-900">Another parent with elderly traveler</span>
+                    <p className="text-sm text-gray-600">Looking for someone in the same situation to travel together</p>
+                  </div>
+                </label>
+
+                <label className="flex items-start p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                  <input
+                    type="radio"
+                    name="companion_type"
+                    value="willing_companion"
+                    checked={formData.companion_type === 'willing_companion'}
+                    onChange={(e) => handleChange('companion_type', e.target.value)}
+                    className="mt-1 mr-3"
+                  />
+                  <div>
+                    <span className="font-medium text-gray-900">Willing to help as a companion</span>
+                    <p className="text-sm text-gray-600">Young traveler willing to assist elderly passengers on my flight</p>
+                  </div>
+                </label>
+
+                <label className="flex items-start p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                  <input
+                    type="radio"
+                    name="companion_type"
+                    value="need_companion"
+                    checked={formData.companion_type === 'need_companion'}
+                    onChange={(e) => handleChange('companion_type', e.target.value)}
+                    className="mt-1 mr-3"
+                  />
+                  <div>
+                    <span className="font-medium text-gray-900">Need a companion/helper</span>
+                    <p className="text-sm text-gray-600">Looking specifically for someone to help my parent navigate</p>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            {/* Help Needed */}
+            <div className="border-b pb-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">Help Needed With</h2>
+              
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { value: 'wheelchair', label: 'Wheelchair/Mobility' },
+                  { value: 'language', label: 'Language Barrier' },
+                  { value: 'first_time', label: 'First Time Flying' },
+                  { value: 'connecting_flight', label: 'Connecting Flights' },
+                  { value: 'baggage', label: 'Baggage Help' },
+                  { value: 'navigation', label: 'Airport Navigation' }
+                ].map(item => (
+                  <button
+                    key={item.value}
+                    type="button"
+                    onClick={() => toggleArrayItem('needs_help_with', item.value)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition ${
+                      formData.needs_help_with.includes(item.value)
+                        ? 'bg-indigo-600 text-white'
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Notes */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Additional Notes (optional)
+                Additional Notes
               </label>
               <textarea
                 value={formData.notes}
                 onChange={(e) => handleChange('notes', e.target.value)}
                 rows={4}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
-                placeholder="e.g., Mom speaks Hindi and English. Needs help finding connecting gate. Traveling with one checked bag."
+                placeholder="Any other information that would help find a good match..."
               />
-              <p className="text-sm text-gray-500 mt-1">
-                Share any specific needs: language preferences, mobility assistance, first-time traveler, etc.
-              </p>
             </div>
 
             <button

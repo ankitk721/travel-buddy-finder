@@ -10,7 +10,10 @@ type Trip = {
   parent_age: number | null
   origin: string
   destination: string
-  flight_date: string
+  flight_date: string | null
+  booking_status?: 'confirmed' | 'flexible' | string | null
+  date_range_start?: string | null
+  date_range_end?: string | null
   flight_number: string | null
   airline: string | null
   notes: string | null
@@ -45,12 +48,14 @@ export default function TripsPage() {
     fetchTrips()
   }, [])
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString?: string | null) => {
+    if (!dateString) return ''
     const date = new Date(dateString)
-    return date.toLocaleDateString('en-US', { 
-      month: 'short', 
-      day: 'numeric', 
-      year: 'numeric' 
+    if (isNaN(date.getTime())) return ''
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
     })
   }
 
@@ -111,7 +116,23 @@ export default function TripsPage() {
                     )}
                   </div>
                   <span className="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium">
-                    {formatDate(trip.flight_date)}
+                    {trip.booking_status === 'confirmed' && trip.flight_date ? (
+                      formatDate(trip.flight_date)
+                    ) : trip.booking_status === 'flexible' ? (
+                      // show a range if both bounds exist, otherwise show partial/fallback text
+                      trip.date_range_start && trip.date_range_end ? (
+                        `${formatDate(trip.date_range_start)} – ${formatDate(trip.date_range_end)}`
+                      ) : trip.date_range_start ? (
+                        `From ${formatDate(trip.date_range_start)}`
+                      ) : trip.date_range_end ? (
+                        `Until ${formatDate(trip.date_range_end)}`
+                      ) : (
+                        'Flexible dates'
+                      )
+                    ) : (
+                      // fallback: if flight_date exists show it, otherwise generic
+                      trip.flight_date ? formatDate(trip.flight_date) : 'Date TBD'
+                    )}
                   </span>
                 </div>
 
