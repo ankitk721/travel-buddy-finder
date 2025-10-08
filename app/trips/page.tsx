@@ -26,10 +26,17 @@ type Trip = {
   created_at: string
 }
 
+type ContactModalData = {
+  trip: Trip
+  email: string
+}
+
 export default function TripsPage() {
   const [trips, setTrips] = useState<Trip[]>([])
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState<any>(null)
+  const [contactModal, setContactModal] = useState<ContactModalData | null>(null)
+  const [copiedEmail, setCopiedEmail] = useState(false)
   const [filter, setFilter] = useState({
     origin: '',
     destination: '',
@@ -57,6 +64,76 @@ export default function TripsPage() {
       setTrips(data)
     }
     setLoading(false)
+  }
+
+  const handleContactClick = async (trip: Trip) => {
+    // Get the poster's email from profiles
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('email')
+      .eq('id', trip.user_id)
+      .single()
+
+    if (profile) {
+      setContactModal({
+        trip,
+        email: profile.email
+      })
+    }
+  }
+
+  const logContact = async (method: string) => {
+    if (!user) return
+
+    await supabase
+      .from('trip_contacts')
+      .insert([{
+        trip_id: contactModal!.trip.id,
+        contacted_by_user_id: user.id,
+        contact_method: method
+      }])
+  }
+
+  const openWhatsApp = () => {
+    if (!contactModal) return
+    
+    const { trip } = contactModal
+    const phone = trip.my_phone?.replace(/\D/g, '') // Remove non-digits
+    const message = encodeURIComponent(
+      `Hi ${trip.my_name}! I saw your post about ${trip.traveler_name} traveling from ${trip.origin} to ${trip.destination}. I'd like to connect about being travel companions.`
+    )
+    
+    logContact('whatsapp')
+    window.open(`https://wa.me/${phone}?text=${message}`, '_blank')
+  }
+
+  const callPhone = () => {
+    if (!contactModal) return
+    logContact('phone')
+    window.location.href = `tel:${contactModal.trip.my_phone}`
+  }
+
+  const copyEmail = async () => {
+    if (!contactModal) return
+    
+    await navigator.clipboard.writeText(contactModal.email)
+    setCopiedEmail(true)
+    logContact('email_copy')
+    
+    setTimeout(() => setCopiedEmail(false), 2000)
+  }
+
+  const sendEmail = () => {
+    if (!contactModal) return
+    
+    const { trip, email } = contactModal
+    const subject = encodeURIComponent(`Travel Companion Request - ${trip.origin} to ${trip.destination}`)
+    const body = encodeURIComponent(
+      `Hi ${trip.my_name},\n\nI saw your post about ${trip.traveler_name} traveling from ${trip.origin} to ${trip.destination}.\n\nI would like to connect about being travel companions.\n\nBest regards`
+    )
+    
+    logContact('email_send')
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`
   }
 
   const formatDate = (dateString: string) => {
@@ -96,12 +173,10 @@ export default function TripsPage() {
     return true
   })
 
+  // Sort: volunteers first, then by date
   const sortedTrips = [...filteredTrips].sort((a, b) => {
-    // Volunteers always come first
     if (a.companion_type === 'willing_companion' && b.companion_type !== 'willing_companion') return -1
     if (b.companion_type === 'willing_companion' && a.companion_type !== 'willing_companion') return 1
-    
-    // Then sort by date
     return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
   })
 
@@ -178,7 +253,7 @@ export default function TripsPage() {
           <div className="text-center py-12">
             <p className="text-xl text-gray-600">Loading trips...</p>
           </div>
-        ) : filteredTrips.length === 0 ? (
+        ) : sortedTrips.length === 0 ? (
           <div className="bg-white rounded-lg shadow-md p-12 text-center">
             <p className="text-xl text-gray-600 mb-4">
               {trips.length === 0 ? 'No trips posted yet' : 'No trips match your filters'}
@@ -195,29 +270,29 @@ export default function TripsPage() {
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {sortedTrips.map((trip) => {
-                const companionType = getCompanionTypeLabel(trip.companion_type)
-                const isVolunteer = trip.companion_type === 'willing_companion'
-                
-                return (
+              const companionType = getCompanionTypeLabel(trip.companion_type)
+              const isVolunteer = trip.companion_type === 'willing_companion'
+              
+              return (
                 <div 
-                    key={trip.id} 
-                    className={`bg-white rounded-lg shadow-md hover:shadow-xl transition overflow-hidden ${
-                    isVolunteer ? 'ring-2 ring-yellow-400 shadow-yellow-100' : ''
-                    }`}
+                  key={trip.id} 
+                  className={`bg-white rounded-lg shadow-md hover:shadow-xl transition overflow-hidden ${
+                    isVolunteer ? 'ring-2 ring-yellow-400' : ''
+                  }`}
                 >
-                    {/* Header with companion type badge */}
-                    <div className={`px-6 py-3 ${
+                  {/* Header */}
+                  <div className={`px-6 py-3 ${
                     isVolunteer 
-                        ? 'bg-gradient-to-r from-yellow-100 to-amber-100 border-b-2 border-yellow-400' 
-                        : `${companionType.color} border-b`
-                    }`}>
+                      ? 'bg-gradient-to-r from-yellow-100 to-amber-100 border-b-2 border-yellow-400' 
+                      : `${companionType.color} border-b`
+                  }`}>
                     <div className="flex items-center gap-2">
-                        {isVolunteer && <span className="text-xl">⭐</span>}
-                        <span className={`text-sm font-semibold ${isVolunteer ? 'text-yellow-900' : ''}`}>
+                      {isVolunteer && <span className="text-xl">⭐</span>}
+                      <span className={`text-sm font-semibold ${isVolunteer ? 'text-yellow-900' : ''}`}>
                         {companionType.text}
-                        </span>
+                      </span>
                     </div>
-                    </div>
+                  </div>
 
                   <div className="p-6">
                     {/* Traveler Info */}
@@ -315,7 +390,10 @@ export default function TripsPage() {
                     </div>
 
                     {/* Contact Button */}
-                    <button className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition font-medium">
+                    <button 
+                      onClick={() => handleContactClick(trip)}
+                      className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition font-medium"
+                    >
                       Contact
                     </button>
                   </div>
@@ -325,6 +403,80 @@ export default function TripsPage() {
           </div>
         )}
       </main>
+
+      {/* Contact Modal */}
+      {contactModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900">Contact {contactModal.trip.my_name}</h3>
+                <p className="text-sm text-gray-600 mt-1">
+                  About {contactModal.trip.traveler_name}'s trip: {contactModal.trip.origin} → {contactModal.trip.destination}
+                </p>
+              </div>
+              <button 
+                onClick={() => setContactModal(null)}
+                className="text-gray-400 hover:text-gray-600 text-2xl"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              {/* WhatsApp Button */}
+              {contactModal.trip.my_phone && (
+                <button 
+                  onClick={openWhatsApp}
+                  className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition flex items-center justify-center gap-2 font-medium"
+                >
+                  <span className="text-xl">💬</span>
+                  <span>Message on WhatsApp</span>
+                </button>
+              )}
+
+              {/* Call Button */}
+              {contactModal.trip.my_phone && (
+                <button 
+                  onClick={callPhone}
+                  className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition flex items-center justify-center gap-2 font-medium"
+                >
+                  <span className="text-xl">📞</span>
+                  <span>Call {contactModal.trip.my_phone}</span>
+                </button>
+              )}
+
+              {/* Email Display with Copy */}
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-600 mb-2">Email Address:</p>
+                <div className="flex items-center gap-2">
+                  <p className="text-gray-900 flex-1 break-all">{contactModal.email}</p>
+                  <button 
+                    onClick={copyEmail}
+                    className="text-indigo-600 hover:text-indigo-800 text-sm font-medium whitespace-nowrap"
+                  >
+                    {copiedEmail ? '✓ Copied!' : 'Copy'}
+                  </button>
+                </div>
+              </div>
+
+              {/* Send Email Button */}
+              <button 
+                onClick={sendEmail}
+                className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition flex items-center justify-center gap-2 font-medium"
+              >
+                <span className="text-xl">✉️</span>
+                <span>Send Email</span>
+              </button>
+
+              {/* Helper Text */}
+              <p className="text-xs text-gray-500 text-center mt-4">
+                💡 On desktop? WhatsApp requires your phone to be connected. Consider emailing instead.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

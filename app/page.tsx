@@ -43,12 +43,16 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Navigation */}
+      // In app/page.tsx, update the nav section:
       <nav className="bg-white shadow-sm">
         <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-indigo-600">Travel Buddy Finder</h1>
           <div className="flex gap-4">
             {user ? (
               <>
+                <Link href="/my-trips" className="text-gray-700 hover:text-gray-900 font-medium">
+                  My Trips
+                </Link>
                 <span className="text-gray-700">Hello, {user.email}</span>
                 <button
                   onClick={handleLogout}
