@@ -96,6 +96,15 @@ export default function TripsPage() {
     return true
   })
 
+  const sortedTrips = [...filteredTrips].sort((a, b) => {
+    // Volunteers always come first
+    if (a.companion_type === 'willing_companion' && b.companion_type !== 'willing_companion') return -1
+    if (b.companion_type === 'willing_companion' && a.companion_type !== 'willing_companion') return 1
+    
+    // Then sort by date
+    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  })
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Navigation */}
@@ -185,15 +194,30 @@ export default function TripsPage() {
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredTrips.map((trip) => {
-              const companionType = getCompanionTypeLabel(trip.companion_type)
-              
-              return (
-                <div key={trip.id} className="bg-white rounded-lg shadow-md hover:shadow-xl transition overflow-hidden">
-                  {/* Header with companion type badge */}
-                  <div className={`px-6 py-3 ${companionType.color} border-b`}>
-                    <span className="text-sm font-semibold">{companionType.text}</span>
-                  </div>
+            {sortedTrips.map((trip) => {
+                const companionType = getCompanionTypeLabel(trip.companion_type)
+                const isVolunteer = trip.companion_type === 'willing_companion'
+                
+                return (
+                <div 
+                    key={trip.id} 
+                    className={`bg-white rounded-lg shadow-md hover:shadow-xl transition overflow-hidden ${
+                    isVolunteer ? 'ring-2 ring-yellow-400 shadow-yellow-100' : ''
+                    }`}
+                >
+                    {/* Header with companion type badge */}
+                    <div className={`px-6 py-3 ${
+                    isVolunteer 
+                        ? 'bg-gradient-to-r from-yellow-100 to-amber-100 border-b-2 border-yellow-400' 
+                        : `${companionType.color} border-b`
+                    }`}>
+                    <div className="flex items-center gap-2">
+                        {isVolunteer && <span className="text-xl">⭐</span>}
+                        <span className={`text-sm font-semibold ${isVolunteer ? 'text-yellow-900' : ''}`}>
+                        {companionType.text}
+                        </span>
+                    </div>
+                    </div>
 
                   <div className="p-6">
                     {/* Traveler Info */}
