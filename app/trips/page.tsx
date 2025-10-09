@@ -249,152 +249,156 @@ export default function TripsPage() {
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {sortedTrips.map((trip) => {
-              const companionType = getCompanionTypeLabel(trip.companion_type)
-              const isVolunteer = trip.companion_type === 'willing_companion'
-              const isMyTrip = user && trip.user_id === user.id
-              
-              return (
-                <div 
-                  key={trip.id} 
-                  className={`bg-white rounded-lg shadow-md hover:shadow-xl transition overflow-hidden ${
-                    isVolunteer ? 'ring-2 ring-yellow-400' : ''
-                  } ${
-                    isMyTrip ? 'ring-2 ring-indigo-400' : ''
-                  }`}
-                >
-                  <div className={`px-6 py-3 ${
-                    isMyTrip
-                      ? 'bg-gradient-to-r from-indigo-100 to-purple-100 border-b-2 border-indigo-400'
-                      : isVolunteer 
-                        ? 'bg-gradient-to-r from-yellow-100 to-amber-100 border-b-2 border-yellow-400' 
-                        : `${companionType.color} border-b`
-                  }`}>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        {isVolunteer && <span className="text-xl">⭐</span>}
-                        <span className={`text-sm font-semibold ${
-                          isMyTrip ? 'text-indigo-900' : isVolunteer ? 'text-yellow-900' : ''
+                const companionType = getCompanionTypeLabel(trip.companion_type)
+                const isVolunteer = trip.companion_type === 'willing_companion'
+                const isMyTrip = user && trip.user_id === user.id
+                
+                return (
+                    <div 
+                    key={trip.id} 
+                    className={`bg-white rounded-lg shadow-md hover:shadow-xl transition overflow-hidden ${
+                        isVolunteer ? 'ring-2 ring-yellow-400' : ''
+                    } ${
+                        isMyTrip ? 'ring-2 ring-indigo-400' : ''
+                    }`}
+                    >
+                    {/* Header - More Compact */}
+                    <div className={`px-4 py-2 ${
+                        isMyTrip
+                        ? 'bg-gradient-to-r from-indigo-100 to-purple-100 border-b border-indigo-400'
+                        : isVolunteer 
+                            ? 'bg-gradient-to-r from-yellow-100 to-amber-100 border-b border-yellow-400' 
+                            : `${companionType.color} border-b`
+                    }`}>
+                        <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                            {isVolunteer && <span className="text-lg">⭐</span>}
+                            <span className={`text-xs font-semibold ${
+                            isMyTrip ? 'text-indigo-900' : isVolunteer ? 'text-yellow-900' : ''
+                            }`}>
+                            {companionType.text}
+                            </span>
+                        </div>
+                        {isMyTrip && (
+                            <span className="bg-indigo-600 text-white px-2 py-0.5 rounded-full text-xs font-bold">
+                            YOUR TRIP
+                            </span>
+                        )}
+                        </div>
+                    </div>
+
+                    <div className="p-4">
+                        {/* Traveler Info - Compact */}
+                        <div className="mb-3">
+                        <div className="flex items-baseline gap-2 mb-1">
+                            <h3 className="text-xl font-bold text-gray-900">
+                            {trip.traveler_name}
+                            </h3>
+                            {trip.traveler_age && (
+                            <span className="text-xs text-gray-500">{trip.traveler_age}y</span>
+                            )}
+                        </div>
+                        </div>
+
+                        {/* Route - Compact */}
+                        <div className="mb-3 pb-3 border-b">
+                        <div className="flex items-center justify-center gap-2 text-base">
+                            <span className="font-semibold text-gray-900">{trip.origin}</span>
+                            <span className="text-indigo-600">→</span>
+                            <span className="font-semibold text-gray-900">{trip.destination}</span>
+                        </div>
+                        </div>
+
+                        {/* Date Info - Inline and Compact */}
+                        <div className="mb-3 flex items-center gap-2 flex-wrap">
+                        <span className={`px-2 py-0.5 rounded text-xs font-semibold ${
+                            trip.booking_status === 'confirmed' 
+                            ? 'bg-green-100 text-green-800' 
+                            : 'bg-yellow-100 text-yellow-800'
                         }`}>
-                          {companionType.text}
+                            {trip.booking_status === 'confirmed' ? 'CONFIRMED' : 'FLEXIBLE'}
                         </span>
-                      </div>
-                      {isMyTrip && (
-                        <span className="bg-indigo-600 text-white px-3 py-1 rounded-full text-xs font-bold">
-                          YOUR TRIP
+                        <span className="text-sm text-gray-700">
+                            {trip.booking_status === 'confirmed' && trip.flight_date 
+                            ? formatDate(trip.flight_date)
+                            : trip.date_range_start && trip.date_range_end
+                                ? `${formatDate(trip.date_range_start)} - ${formatDate(trip.date_range_end)}`
+                                : 'Dates TBD'
+                            }
                         </span>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="p-6">
-                    <div className="mb-4">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-1">
-                        {trip.traveler_name}
-                      </h3>
-                      {trip.traveler_age && (
-                        <p className="text-gray-600 text-sm">Age {trip.traveler_age}</p>
-                      )}
-                    </div>
-
-                    <div className="mb-4 pb-4 border-b">
-                      <div className="flex items-center justify-between text-lg">
-                        <span className="font-semibold text-gray-900">{trip.origin}</span>
-                        <span className="text-indigo-600 mx-2">✈️</span>
-                        <span className="font-semibold text-gray-900">{trip.destination}</span>
-                      </div>
-                    </div>
-
-                    <div className="mb-4">
-                      {trip.booking_status === 'confirmed' && trip.flight_date ? (
-                        <div>
-                          <div className="flex items-center gap-2 mb-2">
-                            <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-semibold">
-                              CONFIRMED
-                            </span>
-                            <span className="text-gray-900 font-semibold">
-                              {formatDate(trip.flight_date)}
-                            </span>
-                          </div>
-                          {trip.airline && (
-                            <p className="text-sm text-gray-600">
-                              {trip.airline} {trip.flight_number && `• ${trip.flight_number}`}
-                            </p>
-                          )}
                         </div>
-                      ) : (
-                        <div>
-                          <div className="flex items-center gap-2 mb-2">
-                            <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs font-semibold">
-                              FLEXIBLE
-                            </span>
-                          </div>
-                          {trip.date_range_start && trip.date_range_end && (
-                            <p className="text-sm text-gray-700">
-                              <span className="font-medium">Date Range:</span><br />
-                              {formatDate(trip.date_range_start)} - {formatDate(trip.date_range_end)}
-                            </p>
-                          )}
+
+                        {/* Flight Info - Only if confirmed */}
+                        {trip.booking_status === 'confirmed' && trip.airline && (
+                        <div className="mb-3 text-xs text-gray-600">
+                            ✈️ {trip.airline}{trip.flight_number && ` ${trip.flight_number}`}
                         </div>
-                      )}
+                        )}
+
+                        {/* Languages - Compact Inline */}
+                        {trip.traveler_languages && trip.traveler_languages.length > 0 && (
+                        <div className="mb-3">
+                            <div className="flex flex-wrap gap-1">
+                            {trip.traveler_languages.slice(0, 3).map(lang => (
+                                <span key={lang} className="bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full text-xs">
+                                {lang}
+                                </span>
+                            ))}
+                            {trip.traveler_languages.length > 3 && (
+                                <span className="text-xs text-gray-500">+{trip.traveler_languages.length - 3}</span>
+                            )}
+                            </div>
+                        </div>
+                        )}
+
+                        {/* Help Needed - Show max 3 */}
+                        {trip.needs_help_with && trip.needs_help_with.length > 0 && (
+                        <div className="mb-3">
+                            <div className="flex flex-wrap gap-1">
+                            {trip.needs_help_with.slice(0, 3).map(help => (
+                                <span key={help} className="bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full text-xs">
+                                {getHelpLabel(help).replace(/[^\w\s]/g, '')}
+                                </span>
+                            ))}
+                            {trip.needs_help_with.length > 3 && (
+                                <span className="text-xs text-gray-500">+{trip.needs_help_with.length - 3} more</span>
+                            )}
+                            </div>
+                        </div>
+                        )}
+
+                        {/* Notes - Shorter Preview */}
+                        {trip.notes && (
+                        <div className="mb-3 text-xs text-gray-600 line-clamp-1 italic">
+                            "{trip.notes}"
+                        </div>
+                        )}
+
+                        {/* Posted By - Smaller */}
+                        <div className="text-xs text-gray-400 mb-3">
+                        by {isMyTrip ? 'You' : trip.my_name}
+                        </div>
+
+                        {/* Contact Button or Your Trip Message */}
+                        {isMyTrip ? (
+                        <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 text-center">
+                            <p className="text-sm text-indigo-900 font-medium mb-1">Your trip</p>
+                            <Link href="/my-trips" className="text-xs text-indigo-700 underline font-semibold">
+                            Manage →
+                            </Link>
+                        </div>
+                        ) : (
+                        <button 
+                            onClick={() => handleContactClick(trip)}
+                            className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition font-medium text-sm"
+                        >
+                            Contact
+                        </button>
+                        )}
                     </div>
-
-                    {trip.traveler_languages && trip.traveler_languages.length > 0 && (
-                      <div className="mb-4">
-                        <p className="text-xs text-gray-500 mb-1">Languages:</p>
-                        <div className="flex flex-wrap gap-1">
-                          {trip.traveler_languages.map(lang => (
-                            <span key={lang} className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs">
-                              {lang}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {trip.needs_help_with && trip.needs_help_with.length > 0 && (
-                      <div className="mb-4">
-                        <p className="text-xs text-gray-500 mb-1">Needs help with:</p>
-                        <div className="flex flex-wrap gap-1">
-                          {trip.needs_help_with.map(help => (
-                            <span key={help} className="bg-indigo-50 text-indigo-700 px-2 py-1 rounded-full text-xs">
-                              {getHelpLabel(help)}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {trip.notes && (
-                      <div className="mb-4 text-sm text-gray-600 line-clamp-2 italic">
-                        "{trip.notes}"
-                      </div>
-                    )}
-
-                    <div className="text-xs text-gray-500 mb-4">
-                      Posted by: <span className="font-medium text-gray-700">
-                        {isMyTrip ? 'You' : trip.my_name}
-                      </span>
-                    </div>
-
-                    {isMyTrip ? (
-                      <div className="bg-indigo-50 border-2 border-indigo-200 rounded-lg p-4 text-center">
-                        <p className="text-indigo-900 font-medium mb-2">This is your trip</p>
-                        <p className="text-sm text-indigo-700">
-                          Manage it from <Link href="/my-trips" className="underline font-semibold">My Trips</Link>
-                        </p>
-                      </div>
-                    ) : (
-                      <button 
-                        onClick={() => handleContactClick(trip)}
-                        className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition font-medium"
-                      >
-                        Contact
-                      </button>
-                    )}
-                  </div>
                 </div>
-              )
-            })}
+                )
+                })}
           </div>
         )}
       </main>
