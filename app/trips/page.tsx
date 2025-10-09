@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
-import Link from 'next/link'
 import Navigation from '@/components/Navigation'
-
+import Link from 'next/link'
 
 type Trip = {
   id: string
@@ -69,7 +68,6 @@ export default function TripsPage() {
   }
 
   const handleContactClick = async (trip: Trip) => {
-    // Get the poster's email from profiles
     const { data: profile } = await supabase
       .from('profiles')
       .select('email')
@@ -100,7 +98,7 @@ export default function TripsPage() {
     if (!contactModal) return
     
     const { trip } = contactModal
-    const phone = trip.my_phone?.replace(/\D/g, '') // Remove non-digits
+    const phone = trip.my_phone?.replace(/\D/g, '')
     const message = encodeURIComponent(
       `Hi ${trip.my_name}! I saw your post about ${trip.traveler_name} traveling from ${trip.origin} to ${trip.destination}. I'd like to connect about being travel companions.`
     )
@@ -175,7 +173,6 @@ export default function TripsPage() {
     return true
   })
 
-  // Sort: volunteers first, then by date
   const sortedTrips = [...filteredTrips].sort((a, b) => {
     if (a.companion_type === 'willing_companion' && b.companion_type !== 'willing_companion') return -1
     if (b.companion_type === 'willing_companion' && a.companion_type !== 'willing_companion') return 1
@@ -184,7 +181,6 @@ export default function TripsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      {/* Navigation */}
       <Navigation />
 
       <main className="max-w-7xl mx-auto px-4 py-8">
@@ -195,7 +191,6 @@ export default function TripsPage() {
           </p>
         </div>
 
-        {/* Filters */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Filter Trips</h2>
           <div className="grid md:grid-cols-3 gap-4">
@@ -258,30 +253,42 @@ export default function TripsPage() {
             {sortedTrips.map((trip) => {
               const companionType = getCompanionTypeLabel(trip.companion_type)
               const isVolunteer = trip.companion_type === 'willing_companion'
+              const isMyTrip = user && trip.user_id === user.id
               
               return (
                 <div 
                   key={trip.id} 
                   className={`bg-white rounded-lg shadow-md hover:shadow-xl transition overflow-hidden ${
                     isVolunteer ? 'ring-2 ring-yellow-400' : ''
+                  } ${
+                    isMyTrip ? 'ring-2 ring-indigo-400' : ''
                   }`}
                 >
-                  {/* Header */}
                   <div className={`px-6 py-3 ${
-                    isVolunteer 
-                      ? 'bg-gradient-to-r from-yellow-100 to-amber-100 border-b-2 border-yellow-400' 
-                      : `${companionType.color} border-b`
+                    isMyTrip
+                      ? 'bg-gradient-to-r from-indigo-100 to-purple-100 border-b-2 border-indigo-400'
+                      : isVolunteer 
+                        ? 'bg-gradient-to-r from-yellow-100 to-amber-100 border-b-2 border-yellow-400' 
+                        : `${companionType.color} border-b`
                   }`}>
-                    <div className="flex items-center gap-2">
-                      {isVolunteer && <span className="text-xl">⭐</span>}
-                      <span className={`text-sm font-semibold ${isVolunteer ? 'text-yellow-900' : ''}`}>
-                        {companionType.text}
-                      </span>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        {isVolunteer && <span className="text-xl">⭐</span>}
+                        <span className={`text-sm font-semibold ${
+                          isMyTrip ? 'text-indigo-900' : isVolunteer ? 'text-yellow-900' : ''
+                        }`}>
+                          {companionType.text}
+                        </span>
+                      </div>
+                      {isMyTrip && (
+                        <span className="bg-indigo-600 text-white px-3 py-1 rounded-full text-xs font-bold">
+                          YOUR TRIP
+                        </span>
+                      )}
                     </div>
                   </div>
 
                   <div className="p-6">
-                    {/* Traveler Info */}
                     <div className="mb-4">
                       <h3 className="text-2xl font-bold text-gray-900 mb-1">
                         {trip.traveler_name}
@@ -291,7 +298,6 @@ export default function TripsPage() {
                       )}
                     </div>
 
-                    {/* Route */}
                     <div className="mb-4 pb-4 border-b">
                       <div className="flex items-center justify-between text-lg">
                         <span className="font-semibold text-gray-900">{trip.origin}</span>
@@ -300,7 +306,6 @@ export default function TripsPage() {
                       </div>
                     </div>
 
-                    {/* Date Info */}
                     <div className="mb-4">
                       {trip.booking_status === 'confirmed' && trip.flight_date ? (
                         <div>
@@ -335,7 +340,6 @@ export default function TripsPage() {
                       )}
                     </div>
 
-                    {/* Languages */}
                     {trip.traveler_languages && trip.traveler_languages.length > 0 && (
                       <div className="mb-4">
                         <p className="text-xs text-gray-500 mb-1">Languages:</p>
@@ -349,7 +353,6 @@ export default function TripsPage() {
                       </div>
                     )}
 
-                    {/* Help Needed */}
                     {trip.needs_help_with && trip.needs_help_with.length > 0 && (
                       <div className="mb-4">
                         <p className="text-xs text-gray-500 mb-1">Needs help with:</p>
@@ -363,25 +366,33 @@ export default function TripsPage() {
                       </div>
                     )}
 
-                    {/* Notes Preview */}
                     {trip.notes && (
                       <div className="mb-4 text-sm text-gray-600 line-clamp-2 italic">
                         "{trip.notes}"
                       </div>
                     )}
 
-                    {/* Posted By */}
                     <div className="text-xs text-gray-500 mb-4">
-                      Posted by: <span className="font-medium text-gray-700">{trip.my_name}</span>
+                      Posted by: <span className="font-medium text-gray-700">
+                        {isMyTrip ? 'You' : trip.my_name}
+                      </span>
                     </div>
 
-                    {/* Contact Button */}
-                    <button 
-                      onClick={() => handleContactClick(trip)}
-                      className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition font-medium"
-                    >
-                      Contact
-                    </button>
+                    {isMyTrip ? (
+                      <div className="bg-indigo-50 border-2 border-indigo-200 rounded-lg p-4 text-center">
+                        <p className="text-indigo-900 font-medium mb-2">This is your trip</p>
+                        <p className="text-sm text-indigo-700">
+                          Manage it from <Link href="/my-trips" className="underline font-semibold">My Trips</Link>
+                        </p>
+                      </div>
+                    ) : (
+                      <button 
+                        onClick={() => handleContactClick(trip)}
+                        className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition font-medium"
+                      >
+                        Contact
+                      </button>
+                    )}
                   </div>
                 </div>
               )
@@ -390,7 +401,6 @@ export default function TripsPage() {
         )}
       </main>
 
-      {/* Contact Modal */}
       {contactModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
@@ -410,7 +420,6 @@ export default function TripsPage() {
             </div>
 
             <div className="space-y-3">
-              {/* WhatsApp Button */}
               {contactModal.trip.my_phone && (
                 <button 
                   onClick={openWhatsApp}
@@ -421,7 +430,6 @@ export default function TripsPage() {
                 </button>
               )}
 
-              {/* Call Button */}
               {contactModal.trip.my_phone && (
                 <button 
                   onClick={callPhone}
@@ -432,7 +440,6 @@ export default function TripsPage() {
                 </button>
               )}
 
-              {/* Email Display with Copy */}
               <div className="bg-gray-50 p-4 rounded-lg">
                 <p className="text-sm text-gray-600 mb-2">Email Address:</p>
                 <div className="flex items-center gap-2">
@@ -446,7 +453,6 @@ export default function TripsPage() {
                 </div>
               </div>
 
-              {/* Send Email Button */}
               <button 
                 onClick={sendEmail}
                 className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition flex items-center justify-center gap-2 font-medium"
@@ -455,7 +461,6 @@ export default function TripsPage() {
                 <span>Send Email</span>
               </button>
 
-              {/* Helper Text */}
               <p className="text-xs text-gray-500 text-center mt-4">
                 💡 On desktop? WhatsApp requires your phone to be connected. Consider emailing instead.
               </p>
