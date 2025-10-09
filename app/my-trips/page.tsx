@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import Navigation from '@/components/Navigation'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 type Contact = {
   contacted_by_name: string
@@ -119,14 +119,17 @@ export default function MyTripsPage() {
   }
 
   const deleteTrip = async (tripId: string) => {
-    if (!confirm('Are you sure you want to delete this trip?')) return
+    if (!confirm('Are you sure you want to delete this trip? This cannot be undone.')) return
 
-    const { error } = await supabase
-      .from('trips')
-      .delete()
-      .eq('id', tripId)
+    const { error } = await supabase.rpc('delete_trip', {
+      trip_id: tripId
+    })
 
-    if (!error) {
+    if (error) {
+      console.error('Error:', error)
+      alert('Error deleting trip: ' + error.message)
+    } else {
+      // Remove from local state
       setTrips(trips.filter(t => t.id !== tripId))
     }
   }
@@ -134,12 +137,16 @@ export default function MyTripsPage() {
   const toggleTripStatus = async (tripId: string, currentStatus: string) => {
     const newStatus = currentStatus === 'active' ? 'completed' : 'active'
     
-    const { error } = await supabase
-      .from('trips')
-      .update({ status: newStatus })
-      .eq('id', tripId)
+    const { error } = await supabase.rpc('update_trip_status', {
+      trip_id: tripId,
+      new_status: newStatus
+    })
 
-    if (!error) {
+    if (error) {
+      console.error('Error:', error)
+      alert('Error updating trip: ' + error.message)
+    } else {
+      // Update local state
       setTrips(trips.map(t => 
         t.id === tripId ? { ...t, status: newStatus } : t
       ))
@@ -148,8 +155,11 @@ export default function MyTripsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-        <p className="text-xl text-gray-600">Loading...</p>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+        <Navigation />
+        <div className="flex items-center justify-center py-20">
+          <p className="text-xl text-gray-600">Loading your trips...</p>
+        </div>
       </div>
     )
   }
@@ -164,10 +174,13 @@ export default function MyTripsPage() {
 
         {trips.length === 0 ? (
           <div className="bg-white rounded-lg shadow-md p-12 text-center">
-            <p className="text-xl text-gray-600 mb-4">You haven't posted any trips yet</p>
+            <div className="text-6xl mb-4">✈️</div>
+            <p className="text-xl text-gray-600 mb-2">You haven't posted any trips yet</p>
+            <p className="text-gray-500 mb-6">Start by posting your first trip to find travel companions</p>
+            
             <Link
               href="/trips/new"
-              className="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 font-medium"
+              className="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 font-medium transition"
             >
               Post Your First Trip
             </Link>
@@ -212,18 +225,18 @@ export default function MyTripsPage() {
                       )}
                     </div>
 
-                    <div className="flex gap-2">
+                    <div className="flex flex-col gap-2">
                       <button
                         onClick={() => toggleTripStatus(trip.id, trip.status)}
-                        className="text-sm text-indigo-600 hover:text-indigo-800 font-medium"
+                        className="text-sm text-indigo-600 hover:text-indigo-800 font-medium px-3 py-1 rounded hover:bg-indigo-50 transition"
                       >
-                        {trip.status === 'active' ? 'Mark Complete' : 'Reactivate'}
+                        {trip.status === 'active' ? '✓ Mark Complete' : '↻ Reactivate'}
                       </button>
                       <button
                         onClick={() => deleteTrip(trip.id)}
-                        className="text-sm text-red-600 hover:text-red-800 font-medium"
+                        className="text-sm text-red-600 hover:text-red-800 font-medium px-3 py-1 rounded hover:bg-red-50 transition"
                       >
-                        Delete
+                        🗑 Delete
                       </button>
                     </div>
                   </div>
@@ -245,7 +258,7 @@ export default function MyTripsPage() {
                   {trip.contacts.length > 0 ? (
                     <div className="space-y-2">
                       {trip.contacts.map((contact, idx) => (
-                        <div key={idx} className="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
+                        <div key={idx} className="flex justify-between items-center bg-gray-50 p-4 rounded-lg hover:bg-gray-100 transition">
                           <div className="flex-1">
                             <p className="font-medium text-gray-900">{contact.contacted_by_name}</p>
                             <p className="text-sm text-gray-600">{contact.contacted_by_email}</p>
@@ -262,9 +275,10 @@ export default function MyTripsPage() {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-gray-500 italic text-center py-4">
-                      No one has contacted you about this trip yet
-                    </p>
+                    <div className="text-center py-8 bg-gray-50 rounded-lg">
+                      <p className="text-gray-500 mb-2">No contacts yet</p>
+                      <p className="text-sm text-gray-400">Share your trip or wait for matches</p>
+                    </div>
                   )}
                 </div>
               </div>
