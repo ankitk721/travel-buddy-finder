@@ -4,6 +4,15 @@ import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
+
+// Load Turnstile only on the client and tolerate either default or named export
+const Turnstile = dynamic(
+  () => import('@marsidev/react-turnstile').then((mod: any) => mod.default ?? mod.Turnstile),
+  { ssr: false }
+)
+// dynamic import returns a component with unknown props to TypeScript — cast to any for now
+const TurnstileAny: any = Turnstile
 
 export default function SignUp() {
   const router = useRouter()
@@ -13,9 +22,16 @@ export default function SignUp() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!captchaToken) {
+      setError('Please complete the security check')
+      return
+    }
+    
     setLoading(true)
     setError('')
     setSuccess(false)
@@ -43,20 +59,17 @@ export default function SignUp() {
         .eq('id', authData.user.id)
 
       if (authData.session) {
-        // Session established immediately - redirect
         setTimeout(() => {
           router.push('/')
           router.refresh()
         }, 500)
       } else {
-        // Email confirmation required
         setSuccess(true)
         setLoading(false)
       }
     }
   }
 
-  // If signup successful and waiting for email confirmation
   if (success) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
@@ -92,7 +105,7 @@ export default function SignUp() {
           </div>
         )}
 
-        <form onSubmit={handleSignUp} className="space-y-4">
+        <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Your Name
@@ -136,14 +149,23 @@ export default function SignUp() {
             />
           </div>
 
+          {/* Turnstile CAPTCHA */}
+          <div className="flex justify-center">
+            <TurnstileAny
+              siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+              onSuccess={(token: string) => setCaptchaToken(token)}
+              onError={() => setError('Security check failed. Please try again.')}
+            />
+          </div>
+
           <button
-            type="submit"
-            disabled={loading}
+            onClick={handleSignUp}
+            disabled={loading || !captchaToken}
             className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Creating account...' : 'Sign Up'}
           </button>
-        </form>
+        </div>
 
         <p className="text-center text-gray-600 mt-6">
           Already have an account?{' '}
