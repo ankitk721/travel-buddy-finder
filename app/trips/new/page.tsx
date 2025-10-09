@@ -12,6 +12,7 @@ export default function NewTrip() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   
+  // Around line 38
   const [formData, setFormData] = useState({
     my_name: '',
     my_phone: '',
@@ -26,7 +27,7 @@ export default function NewTrip() {
     airline: '',
     date_range_start: '',
     date_range_end: '',
-    companion_type: 'fellow_parent',
+    companion_type: 'need_companion', // Changed default
     needs_help_with: [] as string[],
     notes: ''
   })
@@ -383,40 +384,10 @@ export default function NewTrip() {
 
             {/* Companion Type */}
             <div className="border-b pb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">I am...</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">What describes you best?</h2>
               
               <div className="space-y-3">
-                <label className="flex items-start p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                  <input
-                    type="radio"
-                    name="companion_type"
-                    value="fellow_parent"
-                    checked={formData.companion_type === 'fellow_parent'}
-                    onChange={(e) => handleChange('companion_type', e.target.value)}
-                    className="mt-1 mr-3"
-                  />
-                  <div>
-                    <span className="font-medium text-gray-900">Another parent with elderly traveler</span>
-                    <p className="text-sm text-gray-600">Looking for someone in the same situation to travel together</p>
-                  </div>
-                </label>
-
-                <label className="flex items-start p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                  <input
-                    type="radio"
-                    name="companion_type"
-                    value="willing_companion"
-                    checked={formData.companion_type === 'willing_companion'}
-                    onChange={(e) => handleChange('companion_type', e.target.value)}
-                    className="mt-1 mr-3"
-                  />
-                  <div>
-                    <span className="font-medium text-gray-900">Willing to help as a companion</span>
-                    <p className="text-sm text-gray-600">Young traveler willing to assist elderly passengers on my flight</p>
-                  </div>
-                </label>
-
-                <label className="flex items-start p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                <label className="flex items-start p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition">
                   <input
                     type="radio"
                     name="companion_type"
@@ -426,8 +397,27 @@ export default function NewTrip() {
                     className="mt-1 mr-3"
                   />
                   <div>
-                    <span className="font-medium text-gray-900">Need a companion/helper</span>
-                    <p className="text-sm text-gray-600">Looking specifically for someone to help my parent navigate</p>
+                    <span className="font-medium text-gray-900 text-lg">Need a Companion</span>
+                    <p className="text-sm text-gray-600 mt-1">
+                      My parent needs someone to help navigate the airport and travel with
+                    </p>
+                  </div>
+                </label>
+
+                <label className="flex items-start p-4 border-2 rounded-lg cursor-pointer hover:bg-gray-50 transition">
+                  <input
+                    type="radio"
+                    name="companion_type"
+                    value="willing_companion"
+                    checked={formData.companion_type === 'willing_companion'}
+                    onChange={(e) => handleChange('companion_type', e.target.value)}
+                    className="mt-1 mr-3"
+                  />
+                  <div>
+                    <span className="font-medium text-gray-900 text-lg">Willing to Help as Companion</span>
+                    <p className="text-sm text-gray-600 mt-1">
+                      I'm traveling on this route and happy to help an elderly traveler
+                    </p>
                   </div>
                 </label>
               </div>

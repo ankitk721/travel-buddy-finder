@@ -147,10 +147,9 @@ export default function TripsPage() {
 
   const getCompanionTypeLabel = (type: string) => {
     const labels: Record<string, { text: string; color: string }> = {
-      'fellow_parent': { text: 'Fellow Parent', color: 'bg-blue-100 text-blue-800' },
-      'willing_companion': { text: 'Willing to Help', color: 'bg-green-100 text-green-800' },
-      'need_companion': { text: 'Need Companion', color: 'bg-orange-100 text-orange-800' }
-    }
+        'willing_companion': { text: 'Willing to Help', color: 'bg-green-100 text-green-800' },
+        'need_companion': { text: 'Need Companion', color: 'bg-orange-100 text-orange-800' }
+   }
     return labels[type] || { text: type, color: 'bg-gray-100 text-gray-800' }
   }
 
@@ -215,17 +214,16 @@ export default function TripsPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Companion Type</label>
-              <select
+            <label className="block text-sm font-medium text-gray-700 mb-1">Companion Type</label>
+            <select
                 value={filter.companionType}
                 onChange={(e) => setFilter(prev => ({ ...prev, companionType: e.target.value }))}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-gray-900"
-              >
+            >
                 <option value="all">All Types</option>
-                <option value="fellow_parent">Fellow Parents</option>
-                <option value="willing_companion">Willing Helpers</option>
                 <option value="need_companion">Need Companion</option>
-              </select>
+                <option value="willing_companion">Willing to Help</option>
+            </select>
             </div>
           </div>
         </div>
