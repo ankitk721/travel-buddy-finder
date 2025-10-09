@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Navigation from '@/components/Navigation'
+import AirportAutocomplete from '@/components/AirportAutocomplete'
 
 export default function NewTrip() {
   const router = useRouter()
@@ -239,32 +240,24 @@ export default function NewTrip() {
             <div className="border-b pb-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Travel Route</h2>
               
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    From (Origin) *
-                  </label>
-                  <input
-                    type="text"
+              <div className="border-b pb-6">
+                <h2 className="text-xl font-semibold text-gray-900 mb-4">Travel Route</h2>
+                
+                <div className="grid md:grid-cols-2 gap-4">
+                  <AirportAutocomplete
+                    label="From (Origin)"
                     value={formData.origin}
-                    onChange={(e) => handleChange('origin', e.target.value)}
+                    onChange={(value) => handleChange('origin', value)}
+                    placeholder="e.g., Delhi or DEL"
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
-                    placeholder="e.g., Delhi, Mumbai, Bangalore"
                   />
-                </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    To (Destination) *
-                  </label>
-                  <input
-                    type="text"
+                  <AirportAutocomplete
+                    label="To (Destination)"
                     value={formData.destination}
-                    onChange={(e) => handleChange('destination', e.target.value)}
+                    onChange={(value) => handleChange('destination', value)}
+                    placeholder="e.g., San Francisco or SFO"
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
-                    placeholder="e.g., SFO, NYC, London"
                   />
                 </div>
               </div>

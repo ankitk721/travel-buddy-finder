@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import Navigation from '@/components/Navigation'
 import Link from 'next/link'
+import AirportAutocomplete from '@/components/AirportAutocomplete'
 
 type Trip = {
   id: string
@@ -165,12 +166,34 @@ export default function TripsPage() {
     return labels[help] || help
   }
 
-  const filteredTrips = trips.filter(trip => {
-    if (filter.origin && !trip.origin.toLowerCase().includes(filter.origin.toLowerCase())) return false
-    if (filter.destination && !trip.destination.toLowerCase().includes(filter.destination.toLowerCase())) return false
-    if (filter.companionType !== 'all' && trip.companion_type !== filter.companionType) return false
-    return true
-  })
+const filteredTrips = trips.filter(trip => {
+  // Extract just the city/code from formats like "San Francisco (SFO)"
+  const extractLocation = (location: string) => {
+    return location.toLowerCase().replace(/[()]/g, ' ')
+  }
+  
+  if (filter.origin) {
+    const searchOrigin = extractLocation(filter.origin)
+    const tripOrigin = extractLocation(trip.origin)
+    if (!tripOrigin.includes(searchOrigin) && !searchOrigin.includes(tripOrigin)) {
+      return false
+    }
+  }
+  
+  if (filter.destination) {
+    const searchDest = extractLocation(filter.destination)
+    const tripDest = extractLocation(trip.destination)
+    if (!tripDest.includes(searchDest) && !searchDest.includes(tripDest)) {
+      return false
+    }
+  }
+  
+  if (filter.companionType !== 'all' && trip.companion_type !== filter.companionType) {
+    return false
+  }
+  
+  return true
+})
 
   const sortedTrips = [...filteredTrips].sort((a, b) => {
     if (a.companion_type === 'willing_companion' && b.companion_type !== 'willing_companion') return -1
@@ -191,41 +214,33 @@ export default function TripsPage() {
         </div>
 
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Filter Trips</h2>
-          <div className="grid md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Origin</label>
-              <input
-                type="text"
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Filter Trips</h2>
+            <div className="grid md:grid-cols-3 gap-4">
+                <AirportAutocomplete
+                label="Origin"
                 value={filter.origin}
-                onChange={(e) => setFilter(prev => ({ ...prev, origin: e.target.value }))}
-                placeholder="e.g., Delhi, Mumbai"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-gray-900"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Destination</label>
-              <input
-                type="text"
+                onChange={(value) => setFilter(prev => ({ ...prev, origin: value }))}
+                placeholder="Any origin"
+                />
+                <AirportAutocomplete
+                label="Destination"
                 value={filter.destination}
-                onChange={(e) => setFilter(prev => ({ ...prev, destination: e.target.value }))}
-                placeholder="e.g., SFO, NYC"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-gray-900"
-              />
+                onChange={(value) => setFilter(prev => ({ ...prev, destination: value }))}
+                placeholder="Any destination"
+                />
+                <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Companion Type</label>
+                <select
+                    value={filter.companionType}
+                    onChange={(e) => setFilter(prev => ({ ...prev, companionType: e.target.value }))}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-gray-900"
+                >
+                    <option value="all">All Types</option>
+                    <option value="need_companion">Need Companion</option>
+                    <option value="willing_companion">Willing to Help</option>
+                </select>
+                </div>
             </div>
-            <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Companion Type</label>
-            <select
-                value={filter.companionType}
-                onChange={(e) => setFilter(prev => ({ ...prev, companionType: e.target.value }))}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-gray-900"
-            >
-                <option value="all">All Types</option>
-                <option value="need_companion">Need Companion</option>
-                <option value="willing_companion">Willing to Help</option>
-            </select>
-            </div>
-          </div>
         </div>
 
         {loading ? (

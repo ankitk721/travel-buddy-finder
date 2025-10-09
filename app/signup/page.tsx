@@ -120,34 +120,35 @@ export default function SignUp() {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
-              placeholder="you@example.com"
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"  // Add this
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+            placeholder="you@example.com"
             />
-          </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Password
             </label>
             <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={6}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
-              placeholder="At least 6 characters"
-            />
-          </div>
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="new-password"  // This is key!
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={6}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                placeholder="At least 6 characters"
+                />
+            </div>
 
           {/* Turnstile CAPTCHA */}
           <div className="flex justify-center">
