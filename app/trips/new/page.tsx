@@ -119,15 +119,13 @@ export default function NewTrip() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <Navigation />
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+
+      <main className="max-w-2xl mx-auto px-4 py-8">
+        <div className="mb-4">
           <Link href="/trips" className="text-indigo-600 hover:text-indigo-800 font-medium">
             ← Back to Trips
           </Link>
         </div>
-      </nav>
-
-      <main className="max-w-2xl mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-xl p-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Find a Travel Companion</h1>
           <p className="text-gray-600 mb-6">
