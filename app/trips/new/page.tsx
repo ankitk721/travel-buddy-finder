@@ -143,7 +143,23 @@ export default function NewTrip() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Your Info */}
             <div className="border-b pb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Your Information</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">Your Information</h2>
+              
+              {/* Privacy Notice */}
+              <div className="bg-blue-50 border-l-4 border-blue-400 p-4 mb-4">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <svg className="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm text-blue-700">
+                      <strong className="font-semibold">Privacy Notice:</strong> Your contact information (name, phone, email) will be visible to other registered users who are looking for travel companions. Only share details you're comfortable with.
+                    </p>
+                  </div>
+                </div>
+              </div>
               
               <div className="space-y-4">
                 <div>
@@ -158,14 +174,14 @@ export default function NewTrip() {
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                     placeholder="Your full name"
                   />
-                  <p className="text-sm text-gray-500 mt-1">
-                    This will be shared with potential companions
+                  <p className="text-xs text-gray-500 mt-1">
+                    This will be shown to potential companions
                   </p>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Your Phone Number (optional)
+                    Your Phone Number (optional but recommended)
                   </label>
                   <input
                     type="tel"
@@ -174,6 +190,16 @@ export default function NewTrip() {
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                     placeholder="+1 (555) 123-4567"
                   />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Helps companions reach you via WhatsApp or phone call
+                  </p>
+                </div>
+
+                {/* Email notice */}
+                <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                  <p className="text-sm text-gray-700">
+                    📧 Your email <strong>({user?.email})</strong> will also be shared with companions when they contact you.
+                  </p>
                 </div>
               </div>
             </div>
