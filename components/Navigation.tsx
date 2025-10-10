@@ -58,12 +58,21 @@ export default function Navigation() {
               >
                 + Post Trip
               </Link>
-              <button
-                onClick={handleLogout}
-                className="text-gray-600 hover:text-gray-900 font-medium"
-              >
-                Log Out
-              </button>
+              
+              {/* User Email Display */}
+              <div className="flex items-center gap-2 pl-4 border-l border-gray-300">
+                <div className="text-sm">
+                  <p className="text-gray-500">Signed in as</p>
+                  <p className="font-medium text-gray-900">{user.email}</p>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  type="button"
+                  className="text-gray-600 hover:text-gray-900 text-sm underline cursor-pointer"
+                >
+                  Logout
+                </button>
+              </div>
             </>
           ) : (
             <>

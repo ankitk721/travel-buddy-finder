@@ -81,19 +81,25 @@ export default function TripsPage() {
   }
 
   const handleContactClick = async (trip: Trip) => {
+    console.log('Contact clicked for trip:', trip.id)
+    
     const { data: profile } = await supabase
-      .from('profiles')
-      .select('email')
-      .eq('id', trip.user_id)
-      .single()
+        .from('profiles')
+        .select('email')
+        .eq('id', trip.user_id)
+        .single()
+
+    console.log('Profile data:', profile)
 
     if (profile) {
-      setContactModal({
+        setContactModal({
         trip,
         email: profile.email
-      })
+        })
+    } else {
+        console.error('No profile found for user_id:', trip.user_id)
     }
-  }
+}
 
   const logContact = async (method: string) => {
     if (!user) return
