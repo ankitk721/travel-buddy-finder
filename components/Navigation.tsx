@@ -97,6 +97,12 @@ export default function Navigation() {
             </>
           )}
         </div>
+        {/* In Navigation.tsx or at bottom of pages */}
+        <div className="text-center text-sm text-gray-500 py-4">
+            <Link href="/privacy" className="hover:text-gray-700 underline">
+                Privacy Policy
+            </Link>
+        </div>
       </div>
     </nav>
   )
