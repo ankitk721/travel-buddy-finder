@@ -52,7 +52,10 @@ export default function Privacy() {
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-2">Contact Us</h2>
               <p>
-                Questions about privacy? Email us at: <strong>privacy@travelbuddyfinder.com</strong>
+                Questions about privacy? Email us at: <strong>privacy@travel-buddy-finder.com</strong>
+              </p>
+              <p>
+                For anything else email us at: <strong>admin@travel-buddy-finder.com</strong>
               </p>
             </section>
           </div>
