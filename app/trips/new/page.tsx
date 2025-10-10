@@ -171,6 +171,13 @@ export default function NewTrip() {
                     value={formData.my_name}
                     maxLength={30}
                     onChange={(e) => handleChange('my_name', e.target.value)}
+                    onBlur={(e) => {
+                      e.target.value = e.target.value
+                        .trim()
+                        .split(' ')
+                        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                        .join(' ');
+                    }}
                     required
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                     placeholder="Your full name"
@@ -220,6 +227,13 @@ export default function NewTrip() {
                     value={formData.traveler_name}
                     maxLength={30}
                     onChange={(e) => handleChange('traveler_name', e.target.value)}
+                    onBlur={(e) => {
+                      e.target.value = e.target.value
+                        .trim()
+                        .split(' ')
+                        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                        .join(' ');
+                    }}
                     required
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                     placeholder="e.g., Mom, Dad, Rajesh Kumar"
