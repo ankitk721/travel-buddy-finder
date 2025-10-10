@@ -414,19 +414,30 @@ const filteredTrips = trips.filter(trip => {
 
                         {/* Contact Button or Your Trip Message */}
                         {isMyTrip ? (
-                        <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 text-center">
-                            <p className="text-sm text-indigo-900 font-medium mb-1">Your trip</p>
-                            <Link href="/my-trips" className="text-xs text-indigo-700 underline font-semibold">
-                            Manage →
-                            </Link>
-                        </div>
-                        ) : (
-                        <button 
-                            onClick={() => handleContactClick(trip)}
-                            className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition font-medium text-sm"
-                        >
-                            Contact
-                        </button>
+                            <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 text-center">
+                                <p className="text-sm text-indigo-900 font-medium mb-1">Your trip</p>
+                                <Link href="/my-trips" className="text-xs text-indigo-700 underline font-semibold">
+                                Manage →
+                                </Link>
+                            </div>
+                            ) : !user ? (
+                            // Show login prompt for logged-out users
+                            <div className="bg-gray-50 border border-gray-300 rounded-lg p-3 text-center">
+                                <p className="text-sm text-gray-700 mb-2">Sign in to contact</p>
+                                <Link 
+                                href="/login" 
+                                className="text-xs text-indigo-600 hover:text-indigo-800 underline font-semibold"
+                                >
+                                Log in →
+                                </Link>
+                            </div>
+                            ) : (
+                            <button 
+                                onClick={() => handleContactClick(trip)}
+                                className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition font-medium text-sm"
+                            >
+                                Contact
+                            </button>
                         )}
                     </div>
                 </div>
