@@ -35,6 +35,7 @@ type ContactModalData = {
 
 export default function TripsPage() {
   const [trips, setTrips] = useState<Trip[]>([])
+  const [lastFetch, setLastFetch] = useState<number>(0)
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState<any>(null)
   const [contactModal, setContactModal] = useState<ContactModalData | null>(null)
@@ -56,6 +57,15 @@ export default function TripsPage() {
   }, [])
 
   const fetchTrips = async () => {
+      const now = Date.now()
+      const twoMinutes = 2 * 60 * 1000
+        
+     // Use cached data if less than 5 minutes old
+      if (now - lastFetch < twoMinutes && trips.length > 0) {
+        console.log('Using cached trips data')
+        return
+      }
+
     const { data, error } = await supabase
       .from('trips')
       .select('*')
@@ -64,6 +74,8 @@ export default function TripsPage() {
 
     if (!error && data) {
       setTrips(data)
+      console.log('Fetched new trips data' + now)
+      setLastFetch(now)
     }
     setLoading(false)
   }
