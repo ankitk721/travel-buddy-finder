@@ -169,6 +169,7 @@ export default function NewTrip() {
                   <input
                     type="text"
                     value={formData.my_name}
+                    maxLength={30}
                     onChange={(e) => handleChange('my_name', e.target.value)}
                     required
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
@@ -186,6 +187,7 @@ export default function NewTrip() {
                   <input
                     type="tel"
                     value={formData.my_phone}
+                    maxLength={20}
                     onChange={(e) => handleChange('my_phone', e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
                     placeholder="+1 (555) 123-4567"
@@ -216,6 +218,7 @@ export default function NewTrip() {
                   <input
                     type="text"
                     value={formData.traveler_name}
+                    maxLength={30}
                     onChange={(e) => handleChange('traveler_name', e.target.value)}
                     required
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
@@ -478,6 +481,7 @@ export default function NewTrip() {
               </label>
               <textarea
                 value={formData.notes}
+                maxLength={100}
                 onChange={(e) => handleChange('notes', e.target.value)}
                 rows={4}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
