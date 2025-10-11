@@ -120,16 +120,26 @@ export default function SignUp() {
             />
           </div>
 
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <h3 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                <span className="text-blue-600">🔒</span>
-                Privacy & Contact Information
-            </h3>
-            <ul className="text-sm text-gray-700 space-y-1">
-                <li>• Your email and phone will be visible to logged-in users viewing your trips</li>
-                <li>• This allows families to contact you directly for coordination</li>
-                <li>• Your information is never shown to visitors without an account</li>
-            </ul>
+            <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                Email
+            </label>
+            <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                maxLength={254}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                placeholder="you@example.com"
+            />
+            <p className="mt-1.5 text-sm text-gray-600 flex items-start gap-1.5">
+                <span className="text-indigo-600 mt-0.5">ℹ️</span>
+                <span>Your email and phone will be visible to (only) logged-in users viewing your trips. This allows families to contact you directly for coordination. </span>
+            </p>
             </div>
 
             <button
