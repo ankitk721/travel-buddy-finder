@@ -14,6 +14,7 @@ export default function Home() {
   const [stats, setStats] = useState({ activeTrips: 0, thisWeek: 0 })
 
   useEffect(() => {
+    document.title = 'Browse Travel Companions | Travel Buddy Finder'
     // Check if user is logged in
     const checkUser = async () => {
       const { data: { user } } = await supabase.auth.getUser()
