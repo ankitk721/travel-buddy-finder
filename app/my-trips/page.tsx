@@ -36,6 +36,7 @@ export default function MyTripsPage() {
   const [user, setUser] = useState<any>(null)
 
   useEffect(() => {
+    document.title = 'My Trips | Manage Your Travel Companion Requests'
     const init = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {

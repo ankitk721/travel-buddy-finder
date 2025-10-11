@@ -34,6 +34,7 @@ export default function NewTrip() {
   })
 
   useEffect(() => {
+    document.title = 'Post a Trip | Find Travel Companion for Your Parents'
     const checkUser = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
