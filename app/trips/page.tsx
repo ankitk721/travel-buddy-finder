@@ -47,6 +47,7 @@ export default function TripsPage() {
   })
 
   useEffect(() => {
+    document.title = 'Browse Active Trips | Find Travel Companions for India-US Flights'
     const checkUser = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       setUser(user)
