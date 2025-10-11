@@ -1,11 +1,15 @@
+// In Navigation.tsx, update the links to show active state
+
 'use client'
 
-import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 export default function Navigation() {
+  const pathname = usePathname()
   const router = useRouter()
   const [user, setUser] = useState<any>(null)
 
@@ -16,7 +20,6 @@ export default function Navigation() {
     }
     checkUser()
 
-    // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
     })
@@ -27,81 +30,74 @@ export default function Navigation() {
   const handleLogout = async () => {
     await supabase.auth.signOut()
     router.push('/')
-    router.refresh()
   }
+
+  const isActive = (path: string) => pathname === path
 
   return (
     <nav className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-indigo-600 hover:text-indigo-700">
+        <Link href="/" className="text-2xl font-bold text-indigo-600">
           Travel Buddy Finder
         </Link>
         
-        <div className="flex items-center gap-4">
-          {user ? (
+        <div className="flex items-center gap-6">
+          <Link 
+            href="/trips" 
+            className={`text-gray-700 hover:text-indigo-600 font-medium ${
+              isActive('/trips') ? 'text-indigo-600 border-b-2 border-indigo-600 pb-1' : ''
+            }`}
+          >
+            Browse Trips
+          </Link>
+          
+          {user && (
             <>
               <Link 
-                href="/trips" 
-                className="text-gray-700 hover:text-gray-900 font-medium"
-              >
-                Browse Trips
-              </Link>
-              <Link 
                 href="/my-trips" 
-                className="text-gray-700 hover:text-gray-900 font-medium"
+                className={`text-gray-700 hover:text-indigo-600 font-medium ${
+                  isActive('/my-trips') ? 'text-indigo-600 border-b-2 border-indigo-600 pb-1' : ''
+                }`}
               >
                 My Trips
               </Link>
-              <Link 
+              <Link
                 href="/trips/new"
-                className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 font-medium transition"
+                className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition font-medium"
               >
                 + Post Trip
               </Link>
-              
-              {/* User Email Display */}
-              <div className="flex items-center gap-2 pl-4 border-l border-gray-300">
-                <div className="text-sm">
-                  <p className="text-gray-500">Signed in as</p>
-                  <p className="font-medium text-gray-900">{user.email}</p>
-                </div>
-                <button
-                  onClick={handleLogout}
-                  type="button"
-                  className="text-gray-600 hover:text-gray-900 text-sm underline cursor-pointer"
-                >
-                  Logout
-                </button>
-              </div>
-            </>
-          ) : (
-            <>
-              <Link 
-                href="/trips" 
-                className="text-gray-700 hover:text-gray-900 font-medium"
-              >
-                Browse Trips
-              </Link>
-              <Link 
-                href="/login" 
-                className="text-indigo-600 hover:text-indigo-800 font-medium"
-              >
-                Log In
-              </Link>
-              <Link 
-                href="/signup" 
-                className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 font-medium transition"
-              >
-                Sign Up
-              </Link>
             </>
           )}
-        </div>
-        {/* In Navigation.tsx or at bottom of pages */}
-        <div className="text-center text-sm text-gray-500 py-4">
-            <Link href="/privacy" className="hover:text-gray-700 underline">
-                Privacy Policy
+
+          {user ? (
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-gray-600">
+                Signed in as<br />
+                {user.email}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="text-gray-700 hover:text-indigo-600 underline"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className="text-gray-700 hover:text-indigo-600 font-medium"
+            >
+              Login
             </Link>
+          )}
+
+          <Link
+            href="/privacy"
+            className="text-gray-500 hover:text-gray-700 text-sm"
+          >
+            Privacy Policy
+          </Link>
         </div>
       </div>
     </nav>
