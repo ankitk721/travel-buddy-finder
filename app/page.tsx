@@ -87,32 +87,33 @@ export default function Home() {
           <span className="font-semibold text-indigo-600 ml-1">{stats.thisWeek}</span> posted this week
         </div>
 
+        {/* CTA Buttons - Update spacing */}
         {user ? (
-          <div className="space-x-4">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/trips"
-              className="inline-block bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition"
+              className="w-full sm:w-auto bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition text-center"
             >
               Browse Trips
             </Link>
             <Link
               href="/trips/new"
-              className="inline-block bg-white text-indigo-600 px-8 py-4 rounded-lg text-lg font-semibold border-2 border-indigo-600 hover:bg-indigo-50 transition"
+              className="w-full sm:w-auto bg-white text-indigo-600 px-8 py-4 rounded-lg text-lg font-semibold border-2 border-indigo-600 hover:bg-indigo-50 transition text-center"
             >
               Post a Trip
             </Link>
           </div>
         ) : (
-          <div className="space-x-4">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/trips"
-              className="inline-block bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition"
+              className="w-full sm:w-auto bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition text-center"
             >
               Browse Trips
             </Link>
             <Link
               href="/signup"
-              className="inline-block bg-white text-indigo-600 px-8 py-4 rounded-lg text-lg font-semibold border-2 border-indigo-600 hover:bg-indigo-50 transition"
+              className="w-full sm:w-auto bg-white text-indigo-600 px-8 py-4 rounded-lg text-lg font-semibold border-2 border-indigo-600 hover:bg-indigo-50 transition text-center"
             >
               Get Started - It's Free
             </Link>
