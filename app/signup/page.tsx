@@ -142,14 +142,6 @@ export default function SignUp() {
             </p>
             </div>
 
-            <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition disabled:bg-gray-400"
-            >
-            {loading ? 'Creating Account...' : 'Create Account'}
-            </button>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Password
