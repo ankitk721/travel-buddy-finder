@@ -157,13 +157,15 @@ export default function TripsPage() {
   }
 
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString('en-US', { 
-      month: 'short', 
-      day: 'numeric', 
-      year: 'numeric' 
-    })
-  }
+    if (!dateString) return '';
+    
+    return new Date(dateString + 'T00:00:00').toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric', 
+        year: 'numeric',
+        timeZone: 'UTC'
+    });
+}
 
   const getCompanionTypeLabel = (type: string) => {
     const labels: Record<string, { text: string; color: string }> = {
