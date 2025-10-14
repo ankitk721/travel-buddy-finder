@@ -116,10 +116,16 @@ export default function Navigation() {
             )}
 
             <Link
+              href="/contact"
+              className="text-gray-500 hover:text-gray-700 text-sm"
+            >
+              Contact
+            </Link>
+            <Link
               href="/privacy"
               className="text-gray-500 hover:text-gray-700 text-sm"
             >
-              Privacy Policy
+              Privacy
             </Link>
           </div>
         </div>
