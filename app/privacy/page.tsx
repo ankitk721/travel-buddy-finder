@@ -173,8 +173,7 @@ export default function PrivacyPage() {
             <section>
               <h2 className="text-2xl font-bold text-gray-900 mb-3">7. Data Retention</h2>
               <ul className="list-disc pl-6 text-gray-700 space-y-2">
-                <li><strong>Active trips:</strong> Retained until you delete them or mark them complete</li>
-                <li><strong>Completed trips:</strong> Retained for 30 days, then automatically deleted</li>
+                <li><strong>Trips:</strong> Retained until you delete them or mark them complete</li>
                 <li><strong>Account data:</strong> Retained until you request deletion</li>
                 <li><strong>Logs:</strong> Anonymized usage logs retained for 90 days for security purposes</li>
               </ul>
