@@ -35,10 +35,10 @@ export default function ContactPage() {
                   For general inquiries, support, or feedback
                 </p>
                 <a 
-                  href="mailto:support@travel-buddy-finder.com" 
+                  href="mailto:admin@travel-buddy-finder.com" 
                   className="text-indigo-600 hover:underline font-medium"
                 >
-                  support@travel-buddy-finder.com
+                  admin@travel-buddy-finder.com
                 </a>
               </div>
             </div>
@@ -75,7 +75,7 @@ export default function ContactPage() {
               <div>
                 <h3 className="font-semibold text-gray-900 mb-2">How do I report abuse or spam?</h3>
                 <p className="text-gray-600">
-                  Email us immediately at support@travel-buddy-finder.com with details. 
+                  Email us immediately at admin@travel-buddy-finder.com with details. 
                   We take abuse seriously and will investigate promptly.
                 </p>
               </div>
@@ -91,7 +91,7 @@ export default function ContactPage() {
               <div>
                 <h3 className="font-semibold text-gray-900 mb-2">I have a feature request or feedback</h3>
                 <p className="text-gray-600">
-                  We'd love to hear it! Email us your suggestions. We're actively improving the platform 
+                  We'd love to hear it! Email us your suggestions (admin@travel-buddy-finder.com). We're actively improving the platform 
                   based on user feedback.
                 </p>
               </div>

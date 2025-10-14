@@ -158,7 +158,7 @@ export default function PrivacyPage() {
               <h3 className="text-xl font-semibold text-gray-900 mb-2 mt-4">Delete Your Data</h3>
               <ul className="list-disc pl-6 text-gray-700 space-y-2">
                 <li><strong>Delete individual trips:</strong> Use the delete button on "My Trips" page</li>
-                <li><strong>Delete your account:</strong> Email us at support@travel-buddy-finder.com and 
+                <li><strong>Delete your account:</strong> Email us at admin@travel-buddy-finder.com and 
                 we'll delete all your data within 48 hours</li>
               </ul>
 
@@ -217,8 +217,8 @@ export default function PrivacyPage() {
               </p>
               <p className="text-gray-700">
                 <strong>Email:</strong>{' '}
-                <a href="mailto:support@travel-buddy-finder.com" className="text-indigo-600 hover:underline">
-                  support@travel-buddy-finder.com
+                <a href="mailto:admin@travel-buddy-finder.com" className="text-indigo-600 hover:underline">
+                  admin@travel-buddy-finder.com
                 </a>
               </p>
               <p className="text-gray-700 mt-3">
