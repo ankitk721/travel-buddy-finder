@@ -12,6 +12,9 @@ export default function NewTrip() {
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [consentGiven, setConsentGiven] = useState(false)
+  const [termsAccepted, setTermsAccepted] = useState(false)
+  const [accuracyConfirmed, setAccuracyConfirmed] = useState(false)
   
   // Around line 38
   const [formData, setFormData] = useState({
@@ -504,12 +507,86 @@ export default function NewTrip() {
               />
             </div>
 
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 space-y-4">
+              <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                <span className="text-blue-600">🔒</span>
+                Privacy & Terms Agreement
+              </h3>
+              
+              {/* Privacy Notice */}
+              <div className="text-sm text-gray-700 space-y-2 bg-white p-4 rounded border border-blue-100">
+                <p className="font-medium text-gray-900">Before you post, please understand:</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Your contact information (email and phone) will be visible to logged-in users viewing this trip</li>
+                  <li>This allows families to contact you directly for coordination</li>
+                  <li>Your information is never shown to visitors without an account</li>
+                  <li>You can delete this trip anytime from "My Trips"</li>
+                </ul>
+              </div>
+
+              {/* Consent Checkboxes */}
+              <div className="space-y-3">
+                {/* Primary Consent */}
+                <label className="flex items-start gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    required
+                    className="mt-1 w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                    onChange={(e) => setConsentGiven(e.target.checked)}
+                  />
+                  <span className="text-sm text-gray-700 group-hover:text-gray-900">
+                    I understand and consent to my contact information being visible to logged-in users for coordination purposes
+                  </span>
+                </label>
+
+                {/* Terms Agreement */}
+                <label className="flex items-start gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    required
+                    className="mt-1 w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                    onChange={(e) => setTermsAccepted(e.target.checked)}
+                  />
+                  <span className="text-sm text-gray-700 group-hover:text-gray-900">
+                    I agree to the{' '}
+                    <a 
+                      href="/terms" 
+                      target="_blank"
+                      className="text-indigo-600 hover:underline font-medium"
+                    >
+                      Terms of Service
+                    </a>
+                    {' '}and{' '}
+                    <a 
+                      href="/privacy" 
+                      target="_blank"
+                      className="text-indigo-600 hover:underline font-medium"
+                    >
+                      Privacy Policy
+                    </a>
+                  </span>
+                </label>
+
+                {/* Accuracy Confirmation */}
+                <label className="flex items-start gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    required
+                    className="mt-1 w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                    onChange={(e) => setAccuracyConfirmed(e.target.checked)}
+                  />
+                  <span className="text-sm text-gray-700 group-hover:text-gray-900">
+                    I confirm that all information provided is accurate and I have permission to post this trip
+                  </span>
+                </label>
+              </div>
+            </div>
             <button
               type="submit"
-              disabled={loading}
-              className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={loading || !consentGiven || !termsAccepted || !accuracyConfirmed}
+              className="w-full bg-indigo-600 text-white py-4 rounded-lg font-semibold hover:bg-indigo-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed text-lg"
             >
-              {loading ? 'Posting...' : 'Post Trip'}
+              {loading ? 'Posting Trip...' : 'Post Trip'}
             </button>
           </form>
         </div>
