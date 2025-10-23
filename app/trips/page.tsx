@@ -187,8 +187,7 @@ export default function TripsPage() {
     return labels[help] || help
   }
 
-const filteredTrips = trips.filter(trip => {
-    // Check if trip has passed
+const isTripPast = (trip: Trip) => {
   const getTripEndDate = (trip: Trip) => {
     if (trip.booking_status === 'confirmed' && trip.flight_date) {
       return new Date(trip.flight_date)
@@ -199,43 +198,42 @@ const filteredTrips = trips.filter(trip => {
   }
 
   const endDate = getTripEndDate(trip)
-  if (endDate) {
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
+  if (!endDate) return false
+
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  
+  return endDate < today
+}
+
+const filteredTrips = trips.filter(trip => {
+  // Only apply location and companion type filters
+    const extractLocation = (location: string) => {
+        return location.toLowerCase().replace(/[()]/g, ' ')
+    }
     
-    // Hide past trips
-    if (endDate < today) {
-      return false
+    if (filter.origin) {
+        const searchOrigin = extractLocation(filter.origin)
+        const tripOrigin = extractLocation(trip.origin)
+        if (!tripOrigin.includes(searchOrigin) && !searchOrigin.includes(tripOrigin)) {
+        return false
+        }
     }
-  }
-  
-  // Extract just the city/code from formats like "San Francisco (SFO)"
-  const extractLocation = (location: string) => {
-    return location.toLowerCase().replace(/[()]/g, ' ')
-  }
-  
-  if (filter.origin) {
-    const searchOrigin = extractLocation(filter.origin)
-    const tripOrigin = extractLocation(trip.origin)
-    if (!tripOrigin.includes(searchOrigin) && !searchOrigin.includes(tripOrigin)) {
-      return false
+    
+    if (filter.destination) {
+        const searchDest = extractLocation(filter.destination)
+        const tripDest = extractLocation(trip.destination)
+        if (!tripDest.includes(searchDest) && !searchDest.includes(tripDest)) {
+        return false
+        }
     }
-  }
-  
-  if (filter.destination) {
-    const searchDest = extractLocation(filter.destination)
-    const tripDest = extractLocation(trip.destination)
-    if (!tripDest.includes(searchDest) && !searchDest.includes(tripDest)) {
-      return false
+    
+    if (filter.companionType !== 'all' && trip.companion_type !== filter.companionType) {
+        return false
     }
-  }
-  
-  if (filter.companionType !== 'all' && trip.companion_type !== filter.companionType) {
-    return false
-  }
-  
-  return true
-})
+    
+    return true
+  })
 
   const sortedTrips = [...filteredTrips].sort((a, b) => {
     // 1. User's own trips always first
@@ -329,34 +327,44 @@ const filteredTrips = trips.filter(trip => {
                 const companionType = getCompanionTypeLabel(trip.companion_type)
                 const isVolunteer = trip.companion_type === 'willing_companion'
                 const isMyTrip = user && trip.user_id === user.id
+                const isPast = isTripPast(trip)
                 
                 return (
                     <div 
                     key={trip.id} 
                     className={`bg-white rounded-lg shadow-md hover:shadow-xl transition overflow-hidden ${
-                        isVolunteer ? 'ring-2 ring-yellow-400' : ''
+                        isPast ? 'opacity-60 grayscale' : ''
                     } ${
-                        isMyTrip ? 'ring-2 ring-indigo-400' : ''
+                        isVolunteer && !isPast ? 'ring-2 ring-yellow-400' : ''
+                    } ${
+                        isMyTrip && !isPast ? 'ring-2 ring-indigo-400' : ''
                     }`}
                     >
+                    {/* Past Trip Badge */}
+                    {isPast && (
+                        <div className="bg-gray-600 text-white text-center py-1 text-xs font-bold">
+                        ⏰ TRIP COMPLETED
+                        </div>
+                    )}
+                    
                     {/* Header - More Compact */}
                     <div className={`px-4 py-2 ${
-                        isMyTrip
+                        isMyTrip && !isPast
                         ? 'bg-gradient-to-r from-indigo-100 to-purple-100 border-b border-indigo-400'
-                        : isVolunteer 
+                        : isVolunteer && !isPast
                             ? 'bg-gradient-to-r from-yellow-100 to-amber-100 border-b border-yellow-400' 
                             : `${companionType.color} border-b`
                     }`}>
                         <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                            {isVolunteer && <span className="text-lg">⭐</span>}
+                            {isVolunteer && !isPast && <span className="text-lg">⭐</span>}
                             <span className={`text-xs font-semibold ${
-                            isMyTrip ? 'text-indigo-900' : isVolunteer ? 'text-yellow-900' : ''
+                            isMyTrip && !isPast ? 'text-indigo-900' : isVolunteer && !isPast ? 'text-yellow-900' : ''
                             }`}>
                             {companionType.text}
                             </span>
                         </div>
-                        {isMyTrip && (
+                        {isMyTrip && !isPast && (
                             <span className="bg-indigo-600 text-white px-2 py-0.5 rounded-full text-xs font-bold">
                             YOUR TRIP
                             </span>
@@ -458,33 +466,36 @@ const filteredTrips = trips.filter(trip => {
 
                         {/* Contact Button or Your Trip Message */}
                         {isMyTrip ? (
-                            <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 text-center">
-                                <p className="text-sm text-indigo-900 font-medium mb-1">Your trip</p>
-                                <Link href="/my-trips" className="text-xs text-indigo-700 underline font-semibold">
-                                Manage →
-                                </Link>
-                            </div>
-                            ) : !user ? (
-                            // Show login prompt for logged-out users
-                            <div className="bg-gray-50 border border-gray-300 rounded-lg p-3 text-center">
-                                <p className="text-sm text-gray-700 mb-2">Sign in to contact</p>
-                                <Link 
-                                href="/login" 
-                                className="text-xs text-indigo-600 hover:text-indigo-800 underline font-semibold"
-                                >
-                                Log in →
-                                </Link>
-                            </div>
-                            ) : (
-                            <button 
-                                onClick={() => handleContactClick(trip)}
-                                className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition font-medium text-sm"
+                        <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 text-center">
+                            <p className="text-sm text-indigo-900 font-medium mb-1">Your trip</p>
+                            <Link href="/my-trips" className="text-xs text-indigo-700 underline font-semibold">
+                            Manage →
+                            </Link>
+                        </div>
+                        ) : isPast ? (
+                        <div className="bg-gray-100 border border-gray-300 rounded-lg p-3 text-center">
+                            <p className="text-sm text-gray-600">Trip has ended</p>
+                        </div>
+                        ) : !user ? (
+                        <div className="bg-gray-50 border border-gray-300 rounded-lg p-3 text-center">
+                            <p className="text-sm text-gray-700 mb-2">Sign in to contact</p>
+                            <Link 
+                            href="/login" 
+                            className="text-xs text-indigo-600 hover:text-indigo-800 underline font-semibold"
                             >
-                                Contact
-                            </button>
+                            Log in →
+                            </Link>
+                        </div>
+                        ) : (
+                        <button 
+                            onClick={() => handleContactClick(trip)}
+                            className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition font-medium text-sm"
+                        >
+                            Contact
+                        </button>
                         )}
                     </div>
-                </div>
+                    </div>
                 )
                 })}
           </div>
