@@ -188,6 +188,27 @@ export default function TripsPage() {
   }
 
 const filteredTrips = trips.filter(trip => {
+    // Check if trip has passed
+  const getTripEndDate = (trip: Trip) => {
+    if (trip.booking_status === 'confirmed' && trip.flight_date) {
+      return new Date(trip.flight_date)
+    } else if (trip.booking_status === 'flexible' && trip.date_range_end) {
+      return new Date(trip.date_range_end)
+    }
+    return null
+  }
+
+  const endDate = getTripEndDate(trip)
+  if (endDate) {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    
+    // Hide past trips
+    if (endDate < today) {
+      return false
+    }
+  }
+  
   // Extract just the city/code from formats like "San Francisco (SFO)"
   const extractLocation = (location: string) => {
     return location.toLowerCase().replace(/[()]/g, ' ')
@@ -217,10 +238,30 @@ const filteredTrips = trips.filter(trip => {
 })
 
   const sortedTrips = [...filteredTrips].sort((a, b) => {
-    if (a.companion_type === 'willing_companion' && b.companion_type !== 'willing_companion') return -1
-    if (b.companion_type === 'willing_companion' && a.companion_type !== 'willing_companion') return 1
-    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-  })
+    // 1. User's own trips always first
+    const aIsOwn = user && a.user_id === user.id
+    const bIsOwn = user && b.user_id === user.id
+    
+    if (aIsOwn && !bIsOwn) return -1
+    if (!aIsOwn && bIsOwn) return 1
+    
+    // 2. Among other trips: sort by flight date (earliest first)
+    const getFlightDate = (trip: Trip) => {
+        if (trip.booking_status === 'confirmed' && trip.flight_date) {
+        return new Date(trip.flight_date)
+        } else if (trip.booking_status === 'flexible' && trip.date_range_start) {
+        return new Date(trip.date_range_start)
+        }
+        // If no date, push to end
+        return new Date('9999-12-31')
+    }
+    
+    const dateA = getFlightDate(a)
+    const dateB = getFlightDate(b)
+    
+    // Sort by date ascending (earliest first)
+    return dateA.getTime() - dateB.getTime()
+    })
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
