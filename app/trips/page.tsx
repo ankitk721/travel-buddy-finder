@@ -235,31 +235,43 @@ const filteredTrips = trips.filter(trip => {
     return true
   })
 
-  const sortedTrips = [...filteredTrips].sort((a, b) => {
-    // 1. User's own trips always first
-    const aIsOwn = user && a.user_id === user.id
-    const bIsOwn = user && b.user_id === user.id
-    
-    if (aIsOwn && !bIsOwn) return -1
-    if (!aIsOwn && bIsOwn) return 1
-    
-    // 2. Among other trips: sort by flight date (earliest first)
-    const getFlightDate = (trip: Trip) => {
-        if (trip.booking_status === 'confirmed' && trip.flight_date) {
-        return new Date(trip.flight_date)
-        } else if (trip.booking_status === 'flexible' && trip.date_range_start) {
-        return new Date(trip.date_range_start)
-        }
-        // If no date, push to end
-        return new Date('9999-12-31')
+  // Sort trips into: user's own trips first, then upcoming trips by others (by primary date), then past trips (also by date)
+  const sortedTrips = (() => {
+    const getPrimaryDate = (trip: Trip): Date | null => {
+      if (trip.booking_status === 'confirmed' && trip.flight_date) return new Date(trip.flight_date)
+      if (trip.booking_status === 'flexible' && trip.date_range_start) return new Date(trip.date_range_start)
+      return null
     }
-    
-    const dateA = getFlightDate(a)
-    const dateB = getFlightDate(b)
-    
-    // Sort by date ascending (earliest first)
-    return dateA.getTime() - dateB.getTime()
-    })
+
+    const compareByPrimaryDate = (x: Trip, y: Trip) => {
+      const dx = getPrimaryDate(x) ?? new Date('9999-12-31')
+      const dy = getPrimaryDate(y) ?? new Date('9999-12-31')
+      return dx.getTime() - dy.getTime()
+    }
+
+    // Partition trips
+    const ownTrips: Trip[] = []
+    const otherUpcoming: Trip[] = []
+    const otherPast: Trip[] = []
+
+    for (const t of filteredTrips) {
+      const isMy = user && t.user_id === user.id
+      if (isMy) {
+        ownTrips.push(t)
+        continue
+      }
+
+      if (isTripPast(t)) otherPast.push(t)
+      else otherUpcoming.push(t)
+    }
+
+    // Sort each bucket by primary date (earliest first). Own trips also sorted by date.
+    ownTrips.sort(compareByPrimaryDate)
+    otherUpcoming.sort(compareByPrimaryDate)
+    otherPast.sort(compareByPrimaryDate)
+
+    return [...ownTrips, ...otherUpcoming, ...otherPast]
+  })()
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
