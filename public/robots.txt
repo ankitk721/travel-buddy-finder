@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Allow: /trips
+Allow: /signup
+Allow: /login
+Disallow: /my-trips
+Disallow: /admin
+Disallow: /api/
+
+Sitemap: https://www.travel-buddy-finder.com/sitemap.xml
