@@ -387,7 +387,14 @@ const filteredTrips = trips.filter(trip => {
                     <div className="p-4">
                         {/* Traveler Info - Compact */}
                         <div className="mb-3">
-                        <div className="flex items-baseline gap-2 mb-1">
+                        <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-0.5">
+                            {isVolunteer
+                            ? 'Volunteer'
+                            : trip.traveler_name?.trim().toLowerCase() === trip.my_name?.trim().toLowerCase()
+                                ? 'Posted by'
+                                : 'Traveling'}
+                        </div>
+                        <div className="flex items-baseline gap-2">
                             <h3 className="text-xl font-bold text-gray-900">
                             {trip.traveler_name}
                             </h3>
