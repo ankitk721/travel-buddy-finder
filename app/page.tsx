@@ -61,30 +61,34 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-        <p className="text-xl text-gray-600">Loading...</p>
+      <div className="min-h-screen flex items-center justify-center bg-canvas">
+        <p className="text-xl text-stone-600">Loading...</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-canvas">
       {/* Navigation */}
       <Navigation />
 
       {/* Hero Section */}
       <main className="max-w-4xl mx-auto px-4 py-16 text-center">
-        <h2 className="text-5xl font-bold text-gray-900 mb-6">
+        <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-stone-900 mb-6">
           Find Travel Companions for Your Parents
         </h2>
-        <p className="text-xl text-gray-700 mb-4">
+        <p className="text-xl text-stone-600 mb-6">
           Help elderly parents travel safely between India and US with fellow travelers on the same route
         </p>
 
         {/* Stats Bar */}
-        <div className="text-center text-gray-600 mb-8">
-          <span className="font-semibold text-indigo-600">{stats.activeTrips}</span> active trips • 
-          <span className="font-semibold text-indigo-600 ml-1">{stats.thisWeek}</span> posted this week
+        <div className="flex flex-wrap justify-center gap-3 mb-8">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-white px-3 py-1 text-sm text-stone-600">
+            <span className="font-semibold text-primary-700">{stats.activeTrips}</span> active trips
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-white px-3 py-1 text-sm text-stone-600">
+            <span className="font-semibold text-primary-700">{stats.thisWeek}</span> posted this week
+          </span>
         </div>
 
         {/* CTA Buttons - Update spacing */}
@@ -92,13 +96,13 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/trips"
-              className="w-full sm:w-auto bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition text-center"
+              className="w-full sm:w-auto bg-primary-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-primary-700 transition text-center"
             >
               Browse Trips
             </Link>
             <Link
               href="/trips/new"
-              className="w-full sm:w-auto bg-white text-indigo-600 px-8 py-4 rounded-lg text-lg font-semibold border-2 border-indigo-600 hover:bg-indigo-50 transition text-center"
+              className="w-full sm:w-auto bg-white text-primary-600 px-8 py-4 rounded-lg text-lg font-semibold border-2 border-primary-600 hover:bg-primary-50 transition text-center"
             >
               Post a Trip
             </Link>
@@ -107,13 +111,13 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/trips"
-              className="w-full sm:w-auto bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition text-center"
+              className="w-full sm:w-auto bg-primary-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-primary-700 transition text-center"
             >
               Browse Trips
             </Link>
             <Link
               href="/signup"
-              className="w-full sm:w-auto bg-white text-indigo-600 px-8 py-4 rounded-lg text-lg font-semibold border-2 border-indigo-600 hover:bg-indigo-50 transition text-center"
+              className="w-full sm:w-auto bg-white text-primary-600 px-8 py-4 rounded-lg text-lg font-semibold border-2 border-primary-600 hover:bg-primary-50 transition text-center"
             >
               Get Started - It's Free
             </Link>
@@ -122,63 +126,52 @@ export default function Home() {
 
         {/* How It Works */}
         <div className="mt-20 mb-16">
-          <h3 className="text-3xl font-bold text-gray-900 mb-10">How It Works</h3>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <div className="text-4xl mb-4">📝</div>
-              <h4 className="text-xl font-semibold text-gray-900 mb-2">Post Your Trip</h4>
-              <p className="text-gray-600">Share parent's travel route and dates (confirmed or flexible)</p>
+          <h3 className="text-3xl font-bold text-stone-900 mb-10">How It Works</h3>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-white p-6 rounded-xl border border-stone-200 shadow-sm text-left">
+              <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-primary-50 text-xl">📝</div>
+              <h4 className="text-lg font-semibold text-stone-900 mb-1">1. Post Your Trip</h4>
+              <p className="text-sm text-stone-600">Share parent's travel route and dates (confirmed or flexible)</p>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <div className="text-4xl mb-4">🔍</div>
-              <h4 className="text-xl font-semibold text-gray-900 mb-2">Find Companions</h4>
-              <p className="text-gray-600">Browse travelers on same route within ±3 days</p>
+            <div className="bg-white p-6 rounded-xl border border-stone-200 shadow-sm text-left">
+              <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-primary-50 text-xl">🔍</div>
+              <h4 className="text-lg font-semibold text-stone-900 mb-1">2. Find Companions</h4>
+              <p className="text-sm text-stone-600">Browse travelers on same route within ±3 days</p>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <div className="text-4xl mb-4">💬</div>
-              <h4 className="text-xl font-semibold text-gray-900 mb-2">Connect Directly</h4>
-              <p className="text-gray-600">Contact via Email or WhatsApp to coordinate airport meetup</p>
+            <div className="bg-white p-6 rounded-xl border border-stone-200 shadow-sm text-left">
+              <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-primary-50 text-xl">💬</div>
+              <h4 className="text-lg font-semibold text-stone-900 mb-1">3. Connect Directly</h4>
+              <p className="text-sm text-stone-600">Contact via Email or WhatsApp to coordinate airport meetup</p>
             </div>
           </div>
         </div>
 
         {/* Trust Signals */}
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6">Why Families Trust Us</h3>
+        <div className="bg-white p-8 rounded-xl border border-stone-200 shadow-sm">
+          <h3 className="text-2xl font-bold text-stone-900 mb-6">Why Families Trust Us</h3>
           <div className="grid md:grid-cols-3 gap-6 text-left">
-            <div>
-              <div className="flex items-start">
-                <span className="text-green-600 text-xl mr-2">✓</span>
+            {[
+              { title: 'Free Forever', body: 'No hidden fees or subscriptions' },
+              { title: 'Contact Info Protected', body: 'Visible only after login with email verification' },
+              { title: 'Real Travelers', body: 'Phone & email required for all posts' },
+            ].map((item) => (
+              <div key={item.title} className="flex items-start gap-2">
+                <svg className="mt-0.5 h-5 w-5 shrink-0 text-confirmed-700" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                  <path d="M21.8 10A10 10 0 1 1 12 2c1.6 0 3.1.4 4.5 1" />
+                  <path d="m9 11 3 3L22 4" />
+                </svg>
                 <div>
-                  <h4 className="font-semibold text-gray-900">Free Forever</h4>
-                  <p className="text-sm text-gray-600">No hidden fees or subscriptions</p>
+                  <h4 className="font-semibold text-stone-900">{item.title}</h4>
+                  <p className="text-sm text-stone-600">{item.body}</p>
                 </div>
               </div>
-            </div>
-            <div>
-              <div className="flex items-start">
-                <span className="text-green-600 text-xl mr-2">✓</span>
-                <div>
-                  <h4 className="font-semibold text-gray-900">Contact Info Protected</h4>
-                  <p className="text-sm text-gray-600">Visible only after login with email verification</p>
-                </div>
-              </div>
-            </div>
-            <div>
-              <div className="flex items-start">
-                <span className="text-green-600 text-xl mr-2">✓</span>
-                <div>
-                  <h4 className="font-semibold text-gray-900">Real Travelers</h4>
-                  <p className="text-sm text-gray-600">Phone & email required for all posts</p>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
         {/* Use Case Example */}
-        <div className="mt-12 p-6 bg-indigo-50 rounded-lg border border-indigo-200">
-          <p className="text-gray-700 italic">
+        <div className="mt-12 rounded-xl border border-stone-200 border-l-4 border-l-primary-500 bg-canvas-deep p-6 text-left">
+          <p className="text-stone-600 italic">
             "Planning your mother's trip from Mumbai to San Francisco? Find other families with parents traveling the same week."
           </p>
         </div>

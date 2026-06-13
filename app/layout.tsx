@@ -1,5 +1,13 @@
 import type { Metadata } from 'next'
+import { Plus_Jakarta_Sans } from 'next/font/google'
+import Footer from '@/components/Footer'
 import './globals.css'
+
+const sans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-app-sans',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.travel-buddy-finder.com'),
@@ -33,8 +41,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" className={sans.variable}>
+      <body className="flex min-h-screen flex-col">
+        <div className="flex-1">{children}</div>
+        <Footer />
+      </body>
     </html>
   )
 }

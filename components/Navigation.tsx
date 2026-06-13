@@ -48,14 +48,14 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link href="/" className="text-lg sm:text-xl md:text-2xl font-bold text-indigo-600 flex-shrink-0">
+          <Link href="/" className="text-lg sm:text-xl md:text-2xl font-bold text-primary-600 flex-shrink-0">
             Travel Buddy Finder
           </Link>
           
           {/* Mobile Menu Button */}
           <button 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-gray-700 hover:text-indigo-600 focus:outline-none"
+            className="md:hidden p-2 text-stone-700 hover:text-primary-600 focus:outline-none"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? (
@@ -73,8 +73,8 @@ export default function Navigation() {
           <div className="hidden md:flex items-center gap-6">
             <Link 
               href="/trips" 
-              className={`text-gray-700 hover:text-indigo-600 font-medium transition ${
-                isActive('/trips') ? 'text-indigo-600 border-b-2 border-indigo-600 pb-1' : ''
+              className={`text-stone-700 hover:text-primary-600 font-medium transition ${
+                isActive('/trips') ? 'text-primary-600 border-b-2 border-primary-600 pb-1' : ''
               }`}
             >
               Browse Trips
@@ -84,15 +84,15 @@ export default function Navigation() {
               <>
                 <Link 
                   href="/my-trips" 
-                  className={`text-gray-700 hover:text-indigo-600 font-medium transition ${
-                    isActive('/my-trips') ? 'text-indigo-600 border-b-2 border-indigo-600 pb-1' : ''
+                  className={`text-stone-700 hover:text-primary-600 font-medium transition ${
+                    isActive('/my-trips') ? 'text-primary-600 border-b-2 border-primary-600 pb-1' : ''
                   }`}
                 >
                   My Trips
                 </Link>
                 <Link
                   href="/trips/new"
-                  className="text-indigo-600 hover:text-indigo-700 font-semibold border-2 border-indigo-600 px-4 py-1.5 rounded-lg hover:bg-indigo-50 transition whitespace-nowrap"
+                  className="text-primary-600 hover:text-primary-700 font-semibold border-2 border-primary-600 px-4 py-1.5 rounded-lg hover:bg-primary-50 transition whitespace-nowrap"
                 >
                   + Post Trip
                 </Link>
@@ -100,16 +100,13 @@ export default function Navigation() {
             )}
 
             {user ? (
-              <div className="flex items-center gap-4 border-l border-gray-300 pl-6 ml-2">
-                <div className="text-sm">
-                  <span className="text-gray-500 block text-xs">Signed in as</span>
-                  <span className="text-gray-700 font-medium" title={user.email}>
-                    {getShortEmail(user.email)}
-                  </span>
-                </div>
+              <div className="flex items-center gap-4 border-l border-stone-200 pl-6 ml-2">
+                <span className="text-sm text-stone-500 max-w-[14rem] truncate" title={user.email}>
+                  {getShortEmail(user.email)}
+                </span>
                 <button
                   onClick={handleLogout}
-                  className="text-gray-700 hover:text-indigo-600 text-sm font-medium underline"
+                  className="text-stone-600 hover:text-primary-700 text-sm font-medium transition"
                 >
                   Logout
                 </button>
@@ -117,24 +114,11 @@ export default function Navigation() {
             ) : (
               <Link
                 href="/login"
-                className="text-gray-700 hover:text-indigo-600 font-medium"
+                className="text-stone-700 hover:text-primary-700 font-medium transition"
               >
                 Login
               </Link>
             )}
-
-            <Link
-              href="/contact"
-              className="text-gray-500 hover:text-gray-700 text-sm"
-            >
-              Contact
-            </Link>
-            <Link
-              href="/privacy"
-              className="text-gray-500 hover:text-gray-700 text-sm"
-            >
-              Privacy
-            </Link>
           </div>
         </div>
         
@@ -144,8 +128,8 @@ export default function Navigation() {
             <Link 
               href="/trips" 
               onClick={() => setMobileMenuOpen(false)}
-              className={`block py-2 px-3 rounded-lg hover:bg-indigo-50 transition ${
-                isActive('/trips') ? 'bg-indigo-50 text-indigo-600 font-semibold' : 'text-gray-700'
+              className={`block py-2 px-3 rounded-lg hover:bg-primary-50 transition ${
+                isActive('/trips') ? 'bg-primary-50 text-primary-600 font-semibold' : 'text-stone-700'
               }`}
             >
               Browse Trips
@@ -156,8 +140,8 @@ export default function Navigation() {
                 <Link 
                   href="/my-trips" 
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`block py-2 px-3 rounded-lg hover:bg-indigo-50 transition ${
-                    isActive('/my-trips') ? 'bg-indigo-50 text-indigo-600 font-semibold' : 'text-gray-700'
+                  className={`block py-2 px-3 rounded-lg hover:bg-primary-50 transition ${
+                    isActive('/my-trips') ? 'bg-primary-50 text-primary-600 font-semibold' : 'text-stone-700'
                   }`}
                 >
                   My Trips
@@ -165,7 +149,7 @@ export default function Navigation() {
                 <Link 
                   href="/trips/new" 
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block py-3 bg-indigo-600 text-white rounded-lg text-center font-semibold hover:bg-indigo-700 transition"
+                  className="block py-3 bg-primary-600 text-white rounded-lg text-center font-semibold hover:bg-primary-700 transition"
                 >
                   + Post a Trip
                 </Link>
@@ -174,15 +158,15 @@ export default function Navigation() {
 
             {user ? (
               <div className="pt-3 border-t space-y-2">
-                <div className="px-3 py-2 bg-gray-50 rounded-lg">
-                  <div className="text-xs text-gray-500 mb-1">Signed in as</div>
-                  <div className="text-sm text-gray-700 font-medium break-all">
+                <div className="px-3 py-2 bg-stone-50 rounded-lg">
+                  <div className="text-xs text-stone-500 mb-1">Signed in as</div>
+                  <div className="text-sm text-stone-700 font-medium break-all">
                     {user.email}
                   </div>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="w-full py-2 px-3 text-center text-gray-700 hover:bg-gray-100 rounded-lg transition"
+                  className="w-full py-2 px-3 text-center text-stone-700 hover:bg-stone-100 rounded-lg transition"
                 >
                   Logout
                 </button>
@@ -191,26 +175,11 @@ export default function Navigation() {
               <Link
                 href="/login"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block py-2 px-3 text-gray-700 hover:bg-gray-100 rounded-lg transition"
+                className="block py-2 px-3 text-stone-700 hover:bg-stone-100 rounded-lg transition"
               >
                 Login
               </Link>
             )}
-
-            <Link
-              href="/contact"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block py-2 px-3 text-gray-500 hover:bg-gray-100 rounded-lg transition text-sm"
-            >
-              Contact
-            </Link>
-            <Link
-              href="/privacy"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block py-2 px-3 text-gray-500 hover:bg-gray-100 rounded-lg transition text-sm"
-            >
-              Privacy
-            </Link>
           </div>
         )}
       </div>
