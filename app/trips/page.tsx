@@ -356,14 +356,14 @@ const filteredTrips = trips.filter(trip => {
           <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
             <div className="flex justify-between items-start mb-4">
               <div>
-                <h3 className="text-2xl font-bold text-gray-900">Contact {contactModal.trip.my_name}</h3>
-                <p className="text-sm text-gray-600 mt-1">
+                <h3 className="text-2xl font-bold text-stone-900">Contact {contactModal.trip.my_name}</h3>
+                <p className="text-sm text-stone-600 mt-1">
                   About {contactModal.trip.traveler_name}'s trip: {contactModal.trip.origin} → {contactModal.trip.destination}
                 </p>
               </div>
               <button 
                 onClick={() => setContactModal(null)}
-                className="text-gray-400 hover:text-gray-600 text-2xl"
+                className="text-stone-400 hover:text-stone-600 text-2xl"
               >
                 ×
               </button>
@@ -390,10 +390,10 @@ const filteredTrips = trips.filter(trip => {
                 </button>
               )}
 
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <p className="text-sm text-gray-600 mb-2">Email Address:</p>
+              <div className="bg-stone-50 p-4 rounded-lg">
+                <p className="text-sm text-stone-600 mb-2">Email Address:</p>
                 <div className="flex items-center gap-2">
-                  <p className="text-gray-900 flex-1 break-all">{contactModal.email}</p>
+                  <p className="text-stone-900 flex-1 break-all">{contactModal.email}</p>
                   <button 
                     onClick={copyEmail}
                     className="text-primary-600 hover:text-primary-800 text-sm font-medium whitespace-nowrap"
@@ -411,7 +411,7 @@ const filteredTrips = trips.filter(trip => {
                 <span>Send Email</span>
               </button>
 
-              <p className="text-xs text-gray-500 text-center mt-4">
+              <p className="text-xs text-stone-500 text-center mt-4">
                 💡 On desktop? WhatsApp requires your phone to be connected. Consider emailing instead.
               </p>
             </div>

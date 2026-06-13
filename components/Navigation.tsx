@@ -55,7 +55,7 @@ export default function Navigation() {
           {/* Mobile Menu Button */}
           <button 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-gray-700 hover:text-primary-600 focus:outline-none"
+            className="md:hidden p-2 text-stone-700 hover:text-primary-600 focus:outline-none"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? (
@@ -73,7 +73,7 @@ export default function Navigation() {
           <div className="hidden md:flex items-center gap-6">
             <Link 
               href="/trips" 
-              className={`text-gray-700 hover:text-primary-600 font-medium transition ${
+              className={`text-stone-700 hover:text-primary-600 font-medium transition ${
                 isActive('/trips') ? 'text-primary-600 border-b-2 border-primary-600 pb-1' : ''
               }`}
             >
@@ -84,7 +84,7 @@ export default function Navigation() {
               <>
                 <Link 
                   href="/my-trips" 
-                  className={`text-gray-700 hover:text-primary-600 font-medium transition ${
+                  className={`text-stone-700 hover:text-primary-600 font-medium transition ${
                     isActive('/my-trips') ? 'text-primary-600 border-b-2 border-primary-600 pb-1' : ''
                   }`}
                 >
@@ -100,13 +100,13 @@ export default function Navigation() {
             )}
 
             {user ? (
-              <div className="flex items-center gap-4 border-l border-gray-200 pl-6 ml-2">
-                <span className="text-sm text-gray-500 max-w-[14rem] truncate" title={user.email}>
+              <div className="flex items-center gap-4 border-l border-stone-200 pl-6 ml-2">
+                <span className="text-sm text-stone-500 max-w-[14rem] truncate" title={user.email}>
                   {getShortEmail(user.email)}
                 </span>
                 <button
                   onClick={handleLogout}
-                  className="text-gray-600 hover:text-primary-700 text-sm font-medium transition"
+                  className="text-stone-600 hover:text-primary-700 text-sm font-medium transition"
                 >
                   Logout
                 </button>
@@ -114,7 +114,7 @@ export default function Navigation() {
             ) : (
               <Link
                 href="/login"
-                className="text-gray-700 hover:text-primary-700 font-medium transition"
+                className="text-stone-700 hover:text-primary-700 font-medium transition"
               >
                 Login
               </Link>
@@ -129,7 +129,7 @@ export default function Navigation() {
               href="/trips" 
               onClick={() => setMobileMenuOpen(false)}
               className={`block py-2 px-3 rounded-lg hover:bg-primary-50 transition ${
-                isActive('/trips') ? 'bg-primary-50 text-primary-600 font-semibold' : 'text-gray-700'
+                isActive('/trips') ? 'bg-primary-50 text-primary-600 font-semibold' : 'text-stone-700'
               }`}
             >
               Browse Trips
@@ -141,7 +141,7 @@ export default function Navigation() {
                   href="/my-trips" 
                   onClick={() => setMobileMenuOpen(false)}
                   className={`block py-2 px-3 rounded-lg hover:bg-primary-50 transition ${
-                    isActive('/my-trips') ? 'bg-primary-50 text-primary-600 font-semibold' : 'text-gray-700'
+                    isActive('/my-trips') ? 'bg-primary-50 text-primary-600 font-semibold' : 'text-stone-700'
                   }`}
                 >
                   My Trips
@@ -158,15 +158,15 @@ export default function Navigation() {
 
             {user ? (
               <div className="pt-3 border-t space-y-2">
-                <div className="px-3 py-2 bg-gray-50 rounded-lg">
-                  <div className="text-xs text-gray-500 mb-1">Signed in as</div>
-                  <div className="text-sm text-gray-700 font-medium break-all">
+                <div className="px-3 py-2 bg-stone-50 rounded-lg">
+                  <div className="text-xs text-stone-500 mb-1">Signed in as</div>
+                  <div className="text-sm text-stone-700 font-medium break-all">
                     {user.email}
                   </div>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="w-full py-2 px-3 text-center text-gray-700 hover:bg-gray-100 rounded-lg transition"
+                  className="w-full py-2 px-3 text-center text-stone-700 hover:bg-stone-100 rounded-lg transition"
                 >
                   Logout
                 </button>
@@ -175,7 +175,7 @@ export default function Navigation() {
               <Link
                 href="/login"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block py-2 px-3 text-gray-700 hover:bg-gray-100 rounded-lg transition"
+                className="block py-2 px-3 text-stone-700 hover:bg-stone-100 rounded-lg transition"
               >
                 Login
               </Link>

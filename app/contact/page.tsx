@@ -13,9 +13,9 @@ export default function ContactPage() {
       <Navigation />
       
       <main className="max-w-3xl mx-auto px-4 py-12">
-        <div className="bg-white rounded-lg shadow-lg p-8 md:p-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Contact Us</h1>
-          <p className="text-lg text-gray-600 mb-8">
+        <div className="bg-white rounded-xl border border-stone-200 shadow-sm p-8 md:p-12">
+          <h1 className="text-4xl font-bold text-stone-900 mb-4">Contact Us</h1>
+          <p className="text-lg text-stone-600 mb-8">
             We'd love to hear from you! Whether you have questions, feedback, or need help, 
             we're here to assist.
           </p>
@@ -30,8 +30,8 @@ export default function ContactPage() {
                 </svg>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">Email</h3>
-                <p className="text-gray-600 mb-2">
+                <h3 className="text-lg font-semibold text-stone-900 mb-1">Email</h3>
+                <p className="text-stone-600 mb-2">
                   For general inquiries, support, or feedback
                 </p>
                 <a 
@@ -51,8 +51,8 @@ export default function ContactPage() {
                 </svg>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">Response Time</h3>
-                <p className="text-gray-600">
+                <h3 className="text-lg font-semibold text-stone-900 mb-1">Response Time</h3>
+                <p className="text-stone-600">
                   We typically respond within 24-48 hours (usually faster!)
                 </p>
               </div>
@@ -61,36 +61,36 @@ export default function ContactPage() {
 
           {/* Common Questions */}
           <div className="border-t pt-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Common Questions</h2>
+            <h2 className="text-2xl font-bold text-stone-900 mb-4">Common Questions</h2>
             
             <div className="space-y-6">
               <div>
-                <h3 className="font-semibold text-gray-900 mb-2">How do I delete my account?</h3>
-                <p className="text-gray-600">
+                <h3 className="font-semibold text-stone-900 mb-2">How do I delete my account?</h3>
+                <p className="text-stone-600">
                   You can delete your trips from the "My Trips" page. To delete your account entirely, 
                   please email us and we'll remove all your data within 48 hours.
                 </p>
               </div>
 
               <div>
-                <h3 className="font-semibold text-gray-900 mb-2">How do I report abuse or spam?</h3>
-                <p className="text-gray-600">
+                <h3 className="font-semibold text-stone-900 mb-2">How do I report abuse or spam?</h3>
+                <p className="text-stone-600">
                   Email us immediately at admin@travel-buddy-finder.com with details. 
                   We take abuse seriously and will investigate promptly.
                 </p>
               </div>
 
               <div>
-                <h3 className="font-semibold text-gray-900 mb-2">Is this service really free?</h3>
-                <p className="text-gray-600">
+                <h3 className="font-semibold text-stone-900 mb-2">Is this service really free?</h3>
+                <p className="text-stone-600">
                   Yes! Travel Buddy Finder is completely free and will always be. We built this to help 
                   our community, not to make money.
                 </p>
               </div>
 
               <div>
-                <h3 className="font-semibold text-gray-900 mb-2">I have a feature request or feedback</h3>
-                <p className="text-gray-600">
+                <h3 className="font-semibold text-stone-900 mb-2">I have a feature request or feedback</h3>
+                <p className="text-stone-600">
                   We'd love to hear it! Email us your suggestions (admin@travel-buddy-finder.com). We're actively improving the platform 
                   based on user feedback.
                 </p>
@@ -100,7 +100,7 @@ export default function ContactPage() {
 
           {/* Quick Links */}
           <div className="border-t pt-8 mt-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">More Information</h2>
+            <h2 className="text-xl font-semibold text-stone-900 mb-4">More Information</h2>
             <div className="flex flex-wrap gap-4">
               <Link 
                 href="/privacy" 
@@ -108,14 +108,14 @@ export default function ContactPage() {
               >
                 Privacy Policy
               </Link>
-              <span className="text-gray-400">•</span>
+              <span className="text-stone-400">•</span>
               <Link 
                 href="/terms" 
                 className="text-primary-600 hover:underline font-medium"
               >
                 Terms of Service
               </Link>
-              <span className="text-gray-400">•</span>
+              <span className="text-stone-400">•</span>
               <Link 
                 href="/trips" 
                 className="text-primary-600 hover:underline font-medium"

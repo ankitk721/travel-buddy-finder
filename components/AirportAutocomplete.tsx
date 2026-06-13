@@ -85,7 +85,7 @@ export default function AirportAutocomplete({
 
   return (
     <div ref={wrapperRef} className="relative">
-      <label className="block text-sm font-medium text-gray-700 mb-1">
+      <label className="block text-sm font-medium text-stone-700 mb-1">
         {label} {required && <span className="text-red-500">*</span>}
       </label>
       <input
@@ -111,12 +111,12 @@ export default function AirportAutocomplete({
         }}
         required={required}
         placeholder={placeholder}
-        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900"
+        className="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-stone-900"
         autoComplete="off"
       />
 
       {showSuggestions && suggestions.length > 0 && (
-        <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+        <div className="absolute z-50 w-full mt-1 bg-white border border-stone-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
           {suggestions.map((airport, index) => (
             <button
               key={`${airport.code}-${index}`}
@@ -128,19 +128,19 @@ export default function AirportAutocomplete({
             >
               <div className="flex justify-between items-start">
                 <div>
-                  <div className="font-semibold text-gray-900">
+                  <div className="font-semibold text-stone-900">
                     {airport.city} <span className="text-primary-600">({airport.code})</span>
                   </div>
-                  <div className="text-sm text-gray-600">{airport.name}</div>
+                  <div className="text-sm text-stone-600">{airport.name}</div>
                 </div>
-                <div className="text-xs text-gray-500 ml-2">{airport.country}</div>
+                <div className="text-xs text-stone-500 ml-2">{airport.country}</div>
               </div>
             </button>
           ))}
         </div>
       )}
 
-      <p className="text-xs text-gray-500 mt-1">
+      <p className="text-xs text-stone-500 mt-1">
         Start typing city name or airport code (e.g., "San Francisco" or "SFO")
       </p>
     </div>

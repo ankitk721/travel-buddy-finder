@@ -42,8 +42,8 @@ export default function AuthCallback() {
           {/* Loading spinner */}
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
         </div>
-        <h2 className="text-2xl font-bold mb-2 text-gray-900">Completing sign in...</h2>
-        <p className="text-gray-600">You'll be redirected shortly.</p>
+        <h2 className="text-2xl font-bold mb-2 text-stone-900">Completing sign in...</h2>
+        <p className="text-stone-600">You'll be redirected shortly.</p>
       </div>
     </div>
   )

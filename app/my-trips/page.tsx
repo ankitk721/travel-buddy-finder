@@ -159,7 +159,7 @@ export default function MyTripsPage() {
       <div className="min-h-screen bg-canvas">
         <Navigation />
         <div className="flex items-center justify-center py-20">
-          <p className="text-xl text-gray-600">Loading your trips...</p>
+          <p className="text-xl text-stone-600">Loading your trips...</p>
         </div>
       </div>
     )
@@ -170,15 +170,15 @@ export default function MyTripsPage() {
       <Navigation />
 
       <main className="max-w-5xl mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">My Posted Trips</h1>
-        <p className="text-gray-700 mb-8">Manage your trips and see who contacted you</p>
+        <h1 className="text-3xl font-bold text-stone-900 mb-1">My Posted Trips</h1>
+        <p className="text-stone-600 mb-8">Manage your trips and see who contacted you</p>
 
         {trips.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-md p-12 text-center">
+          <div className="bg-white rounded-xl border border-stone-200 shadow-sm p-12 text-center">
             <div className="text-6xl mb-4">✈️</div>
-            <p className="text-xl text-gray-600 mb-2">You haven't posted any trips yet</p>
-            <p className="text-gray-500 mb-6">Start by posting your first trip to find travel companions</p>
-            
+            <p className="text-xl text-stone-600 mb-2">You haven't posted any trips yet</p>
+            <p className="text-stone-500 mb-6">Start by posting your first trip to find travel companions</p>
+
             <Link
               href="/trips/new"
               className="inline-block bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 font-medium transition"
@@ -189,38 +189,36 @@ export default function MyTripsPage() {
         ) : (
           <div className="space-y-6">
             {trips.map((trip) => (
-              <div key={trip.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div key={trip.id} className="bg-white rounded-xl border border-stone-200 shadow-sm overflow-hidden">
                 {/* Trip Header */}
-                <div className={`px-6 py-4 border-b ${
-                  trip.status === 'active' ? 'bg-green-50' : 'bg-gray-50'
-                }`}>
+                <div className="px-6 py-4 border-b border-stone-100">
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-2xl font-bold text-gray-900">{trip.traveler_name}</h3>
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                          trip.status === 'active' 
-                            ? 'bg-green-100 text-green-800' 
-                            : 'bg-gray-200 text-gray-700'
+                        <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${
+                          trip.status === 'active'
+                            ? 'bg-confirmed-100 text-confirmed-700'
+                            : 'bg-stone-100 text-stone-500'
                         }`}>
                           {trip.status === 'active' ? 'Active' : 'Completed'}
                         </span>
+                        <h3 className="text-lg font-bold text-stone-900">{trip.traveler_name}</h3>
                       </div>
-                      
-                      <div className="text-gray-700 mb-2">
-                        <span className="font-semibold">{trip.origin}</span>
-                        <span className="mx-2">→</span>
-                        <span className="font-semibold">{trip.destination}</span>
+
+                      <div className="flex items-center gap-2 text-lg font-bold tracking-tight text-stone-900 mb-2">
+                        <span>{trip.origin}</span>
+                        <span className="text-primary-500">→</span>
+                        <span>{trip.destination}</span>
                       </div>
 
                       {trip.booking_status === 'confirmed' && trip.flight_date ? (
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-stone-600">
                           <span className="font-medium">Flight:</span> {formatDate(trip.flight_date)}
                           {trip.airline && ` • ${trip.airline}`}
                           {trip.flight_number && ` ${trip.flight_number}`}
                         </p>
                       ) : (
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-stone-600">
                           <span className="font-medium">Flexible:</span> {trip.date_range_start && formatDate(trip.date_range_start)} - {trip.date_range_end && formatDate(trip.date_range_end)}
                         </p>
                       )}
@@ -229,15 +227,15 @@ export default function MyTripsPage() {
                     <div className="flex flex-col gap-2">
                       <button
                         onClick={() => toggleTripStatus(trip.id, trip.status)}
-                        className="text-sm text-primary-600 hover:text-primary-800 font-medium px-3 py-1 rounded hover:bg-primary-50 transition"
+                        className="text-sm text-primary-700 hover:text-primary-800 font-medium px-3 py-1 rounded hover:bg-primary-50 transition"
                       >
-                        {trip.status === 'active' ? '✓ Mark Complete' : '↻ Reactivate'}
+                        {trip.status === 'active' ? 'Mark complete' : 'Reactivate'}
                       </button>
                       <button
                         onClick={() => deleteTrip(trip.id)}
                         className="text-sm text-red-600 hover:text-red-800 font-medium px-3 py-1 rounded hover:bg-red-50 transition"
                       >
-                        🗑 Delete
+                        Delete
                       </button>
                     </div>
                   </div>
@@ -246,11 +244,11 @@ export default function MyTripsPage() {
                 {/* Contacts Section */}
                 <div className="px-6 py-4">
                   <div className="flex items-center justify-between mb-3">
-                    <h4 className="font-semibold text-gray-900">
+                    <h4 className="font-semibold text-stone-900">
                       Contacts ({trip.contacts.length})
                     </h4>
                     {trip.contacts.length > 0 && (
-                      <span className="text-sm text-green-600 font-medium">
+                      <span className="text-sm text-confirmed-700 font-medium">
                         🎉 People are interested!
                       </span>
                     )}
@@ -259,16 +257,16 @@ export default function MyTripsPage() {
                   {trip.contacts.length > 0 ? (
                     <div className="space-y-2">
                       {trip.contacts.map((contact, idx) => (
-                        <div key={idx} className="flex justify-between items-center bg-gray-50 p-4 rounded-lg hover:bg-gray-100 transition">
+                        <div key={idx} className="flex justify-between items-center bg-stone-50 p-4 rounded-lg hover:bg-stone-100 transition">
                           <div className="flex-1">
-                            <p className="font-medium text-gray-900">{contact.contacted_by_name}</p>
-                            <p className="text-sm text-gray-600">{contact.contacted_by_email}</p>
+                            <p className="font-medium text-stone-900">{contact.contacted_by_name}</p>
+                            <p className="text-sm text-stone-600">{contact.contacted_by_email}</p>
                           </div>
                           <div className="text-right">
-                            <p className="text-sm text-gray-700 mb-1">
+                            <p className="text-sm text-stone-700 mb-1">
                               {getMethodIcon(contact.contact_method)} {contact.contact_method.replace('_', ' ')}
                             </p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-stone-500">
                               {formatDate(contact.created_at)}
                             </p>
                           </div>
@@ -276,9 +274,9 @@ export default function MyTripsPage() {
                       ))}
                     </div>
                   ) : (
-                    <div className="text-center py-8 bg-gray-50 rounded-lg">
-                      <p className="text-gray-500 mb-2">No contacts yet</p>
-                      <p className="text-sm text-gray-400">Share your trip or wait for matches</p>
+                    <div className="text-center py-8 bg-stone-50 rounded-lg">
+                      <p className="text-stone-500 mb-2">No contacts yet</p>
+                      <p className="text-sm text-stone-400">Share your trip or wait for matches</p>
                     </div>
                   )}
                 </div>
