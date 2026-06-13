@@ -100,16 +100,13 @@ export default function Navigation() {
             )}
 
             {user ? (
-              <div className="flex items-center gap-4 border-l border-gray-300 pl-6 ml-2">
-                <div className="text-sm">
-                  <span className="text-gray-500 block text-xs">Signed in as</span>
-                  <span className="text-gray-700 font-medium" title={user.email}>
-                    {getShortEmail(user.email)}
-                  </span>
-                </div>
+              <div className="flex items-center gap-4 border-l border-gray-200 pl-6 ml-2">
+                <span className="text-sm text-gray-500 max-w-[14rem] truncate" title={user.email}>
+                  {getShortEmail(user.email)}
+                </span>
                 <button
                   onClick={handleLogout}
-                  className="text-gray-700 hover:text-primary-600 text-sm font-medium underline"
+                  className="text-gray-600 hover:text-primary-700 text-sm font-medium transition"
                 >
                   Logout
                 </button>
@@ -117,24 +114,11 @@ export default function Navigation() {
             ) : (
               <Link
                 href="/login"
-                className="text-gray-700 hover:text-primary-600 font-medium"
+                className="text-gray-700 hover:text-primary-700 font-medium transition"
               >
                 Login
               </Link>
             )}
-
-            <Link
-              href="/contact"
-              className="text-gray-500 hover:text-gray-700 text-sm"
-            >
-              Contact
-            </Link>
-            <Link
-              href="/privacy"
-              className="text-gray-500 hover:text-gray-700 text-sm"
-            >
-              Privacy
-            </Link>
           </div>
         </div>
         
@@ -196,21 +180,6 @@ export default function Navigation() {
                 Login
               </Link>
             )}
-
-            <Link
-              href="/contact"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block py-2 px-3 text-gray-500 hover:bg-gray-100 rounded-lg transition text-sm"
-            >
-              Contact
-            </Link>
-            <Link
-              href="/privacy"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block py-2 px-3 text-gray-500 hover:bg-gray-100 rounded-lg transition text-sm"
-            >
-              Privacy
-            </Link>
           </div>
         )}
       </div>
