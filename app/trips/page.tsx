@@ -274,7 +274,7 @@ const filteredTrips = trips.filter(trip => {
   })()
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-canvas">
       <Navigation />
 
       <main className="max-w-7xl mx-auto px-4 py-8">
@@ -305,7 +305,7 @@ const filteredTrips = trips.filter(trip => {
                 <select
                     value={filter.companionType}
                     onChange={(e) => setFilter(prev => ({ ...prev, companionType: e.target.value }))}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-gray-900"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 text-gray-900"
                 >
                     <option value="all">All Types</option>
                     <option value="need_companion">Need Companion</option>
@@ -327,7 +327,7 @@ const filteredTrips = trips.filter(trip => {
             {user && trips.length === 0 && (
               <Link
                 href="/trips/new"
-                className="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 font-medium"
+                className="inline-block bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 font-medium"
               >
                 Be the first to post!
               </Link>
@@ -349,7 +349,7 @@ const filteredTrips = trips.filter(trip => {
                     } ${
                         isVolunteer && !isPast ? 'ring-2 ring-yellow-400' : ''
                     } ${
-                        isMyTrip && !isPast ? 'ring-2 ring-indigo-400' : ''
+                        isMyTrip && !isPast ? 'ring-2 ring-primary-400' : ''
                     }`}
                     >
                     {/* Past Trip Badge */}
@@ -362,7 +362,7 @@ const filteredTrips = trips.filter(trip => {
                     {/* Header - More Compact */}
                     <div className={`px-4 py-2 ${
                         isMyTrip && !isPast
-                        ? 'bg-gradient-to-r from-indigo-100 to-purple-100 border-b border-indigo-400'
+                        ? 'bg-gradient-to-r from-primary-100 to-purple-100 border-b border-primary-400'
                         : isVolunteer && !isPast
                             ? 'bg-gradient-to-r from-yellow-100 to-amber-100 border-b border-yellow-400' 
                             : `${companionType.color} border-b`
@@ -371,13 +371,13 @@ const filteredTrips = trips.filter(trip => {
                         <div className="flex items-center gap-2">
                             {isVolunteer && !isPast && <span className="text-lg">⭐</span>}
                             <span className={`text-xs font-semibold ${
-                            isMyTrip && !isPast ? 'text-indigo-900' : isVolunteer && !isPast ? 'text-yellow-900' : ''
+                            isMyTrip && !isPast ? 'text-primary-900' : isVolunteer && !isPast ? 'text-yellow-900' : ''
                             }`}>
                             {companionType.text}
                             </span>
                         </div>
                         {isMyTrip && !isPast && (
-                            <span className="bg-indigo-600 text-white px-2 py-0.5 rounded-full text-xs font-bold">
+                            <span className="bg-primary-600 text-white px-2 py-0.5 rounded-full text-xs font-bold">
                             YOUR TRIP
                             </span>
                         )}
@@ -408,7 +408,7 @@ const filteredTrips = trips.filter(trip => {
                         <div className="mb-3 pb-3 border-b">
                         <div className="flex items-center justify-center gap-2 text-base">
                             <span className="font-semibold text-gray-900">{trip.origin}</span>
-                            <span className="text-indigo-600">→</span>
+                            <span className="text-primary-600">→</span>
                             <span className="font-semibold text-gray-900">{trip.destination}</span>
                         </div>
                         </div>
@@ -460,7 +460,7 @@ const filteredTrips = trips.filter(trip => {
                         <div className="mb-3">
                             <div className="flex flex-wrap gap-1">
                             {trip.needs_help_with.slice(0, 3).map(help => (
-                                <span key={help} className="bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full text-xs">
+                                <span key={help} className="bg-primary-50 text-primary-700 px-2 py-0.5 rounded-full text-xs">
                                 {getHelpLabel(help).replace(/[^\w\s]/g, '')}
                                 </span>
                             ))}
@@ -485,9 +485,9 @@ const filteredTrips = trips.filter(trip => {
 
                         {/* Contact Button or Your Trip Message */}
                         {isMyTrip ? (
-                        <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 text-center">
-                            <p className="text-sm text-indigo-900 font-medium mb-1">Your trip</p>
-                            <Link href="/my-trips" className="text-xs text-indigo-700 underline font-semibold">
+                        <div className="bg-primary-50 border border-primary-200 rounded-lg p-3 text-center">
+                            <p className="text-sm text-primary-900 font-medium mb-1">Your trip</p>
+                            <Link href="/my-trips" className="text-xs text-primary-700 underline font-semibold">
                             Manage →
                             </Link>
                         </div>
@@ -500,7 +500,7 @@ const filteredTrips = trips.filter(trip => {
                             <p className="text-sm text-gray-700 mb-2">Sign in to contact</p>
                             <Link 
                             href="/login" 
-                            className="text-xs text-indigo-600 hover:text-indigo-800 underline font-semibold"
+                            className="text-xs text-primary-600 hover:text-primary-800 underline font-semibold"
                             >
                             Log in →
                             </Link>
@@ -508,7 +508,7 @@ const filteredTrips = trips.filter(trip => {
                         ) : (
                         <button 
                             onClick={() => handleContactClick(trip)}
-                            className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition font-medium text-sm"
+                            className="w-full bg-primary-600 text-white py-2 rounded-lg hover:bg-primary-700 transition font-medium text-sm"
                         >
                             Contact
                         </button>
@@ -566,7 +566,7 @@ const filteredTrips = trips.filter(trip => {
                   <p className="text-gray-900 flex-1 break-all">{contactModal.email}</p>
                   <button 
                     onClick={copyEmail}
-                    className="text-indigo-600 hover:text-indigo-800 text-sm font-medium whitespace-nowrap"
+                    className="text-primary-600 hover:text-primary-800 text-sm font-medium whitespace-nowrap"
                   >
                     {copiedEmail ? '✓ Copied!' : 'Copy'}
                   </button>
@@ -575,7 +575,7 @@ const filteredTrips = trips.filter(trip => {
 
               <button 
                 onClick={sendEmail}
-                className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition flex items-center justify-center gap-2 font-medium"
+                className="w-full bg-primary-600 text-white py-3 rounded-lg hover:bg-primary-700 transition flex items-center justify-center gap-2 font-medium"
               >
                 <span className="text-xl">✉️</span>
                 <span>Send Email</span>

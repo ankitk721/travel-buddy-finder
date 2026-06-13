@@ -9,7 +9,7 @@ export const metadata = {
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-canvas">
       <Navigation />
       
       <main className="max-w-4xl mx-auto px-4 py-12">
@@ -216,17 +216,17 @@ export default function PrivacyPage() {
               </p>
               <p className="text-gray-700">
                 <strong>Email:</strong>{' '}
-                <a href="mailto:admin@travel-buddy-finder.com" className="text-indigo-600 hover:underline">
+                <a href="mailto:admin@travel-buddy-finder.com" className="text-primary-600 hover:underline">
                   admin@travel-buddy-finder.com
                 </a>
               </p>
               <p className="text-gray-700 mt-3">
-                Or visit our <Link href="/contact" className="text-indigo-600 hover:underline">Contact Us</Link> page.
+                Or visit our <Link href="/contact" className="text-primary-600 hover:underline">Contact Us</Link> page.
               </p>
             </section>
 
             {/* Summary */}
-            <section className="border-t pt-6 mt-8 bg-indigo-50 p-6 rounded-lg">
+            <section className="border-t pt-6 mt-8 bg-primary-50 p-6 rounded-lg">
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Privacy Policy Summary</h3>
               <ul className="space-y-2 text-gray-700">
                 <li>✓ We collect only what's needed to connect families</li>

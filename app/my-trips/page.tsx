@@ -156,7 +156,7 @@ export default function MyTripsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="min-h-screen bg-canvas">
         <Navigation />
         <div className="flex items-center justify-center py-20">
           <p className="text-xl text-gray-600">Loading your trips...</p>
@@ -166,7 +166,7 @@ export default function MyTripsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-canvas">
       <Navigation />
 
       <main className="max-w-5xl mx-auto px-4 py-8">
@@ -181,7 +181,7 @@ export default function MyTripsPage() {
             
             <Link
               href="/trips/new"
-              className="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 font-medium transition"
+              className="inline-block bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 font-medium transition"
             >
               Post Your First Trip
             </Link>
@@ -229,7 +229,7 @@ export default function MyTripsPage() {
                     <div className="flex flex-col gap-2">
                       <button
                         onClick={() => toggleTripStatus(trip.id, trip.status)}
-                        className="text-sm text-indigo-600 hover:text-indigo-800 font-medium px-3 py-1 rounded hover:bg-indigo-50 transition"
+                        className="text-sm text-primary-600 hover:text-primary-800 font-medium px-3 py-1 rounded hover:bg-primary-50 transition"
                       >
                         {trip.status === 'active' ? '✓ Mark Complete' : '↻ Reactivate'}
                       </button>

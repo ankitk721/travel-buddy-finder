@@ -58,7 +58,7 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-canvas flex items-center justify-center px-4 py-12">
       <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
         <h2 className="text-3xl font-bold text-center mb-2 text-gray-900">Create Account</h2>
         <p className="text-center text-gray-600 mb-8">Join Travel Buddy Finder</p>
@@ -115,11 +115,11 @@ export default function SignupPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900"
               placeholder="you@example.com"
             />
             <p className="mt-1.5 text-sm text-gray-600 flex items-start gap-1.5">
-              <span className="text-indigo-600 mt-0.5">ℹ️</span>
+              <span className="text-primary-600 mt-0.5">ℹ️</span>
               <span>Your email will be visible to logged-in users viewing your trips</span>
             </p>
           </div>
@@ -137,7 +137,7 @@ export default function SignupPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900"
               placeholder="••••••••"
             />
             <p className="mt-1 text-xs text-gray-500">Must be at least 6 characters</p>
@@ -159,7 +159,7 @@ export default function SignupPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+            className="w-full bg-primary-600 text-white py-3 rounded-lg font-semibold hover:bg-primary-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
             {loading ? 'Creating Account...' : 'Create Account'}
           </button>
@@ -167,7 +167,7 @@ export default function SignupPage() {
 
         <p className="mt-6 text-center text-gray-600 text-sm">
           Already have an account?{' '}
-          <Link href="/login" className="text-indigo-600 hover:underline font-semibold">
+          <Link href="/login" className="text-primary-600 hover:underline font-semibold">
             Sign in
           </Link>
         </p>

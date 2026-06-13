@@ -92,7 +92,7 @@ export default function AdminPage() {
       'whatsapp': { label: '💬 WhatsApp', color: 'bg-green-100 text-green-800' },
       'phone': { label: '📞 Phone', color: 'bg-blue-100 text-blue-800' },
       'email_copy': { label: '📋 Copy Email', color: 'bg-purple-100 text-purple-800' },
-      'email_send': { label: '✉️ Send Email', color: 'bg-indigo-100 text-indigo-800' }
+      'email_send': { label: '✉️ Send Email', color: 'bg-primary-100 text-primary-800' }
     }
     const badge = badges[method] || { label: method, color: 'bg-gray-100 text-gray-800' }
     return (
@@ -116,7 +116,7 @@ export default function AdminPage() {
       <nav className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-          <Link href="/" className="text-indigo-600 hover:text-indigo-800 font-medium">
+          <Link href="/" className="text-primary-600 hover:text-primary-800 font-medium">
             ← Back to Home
           </Link>
         </div>
@@ -140,7 +140,7 @@ export default function AdminPage() {
             </div>
             <div className="bg-white rounded-lg shadow p-6">
               <p className="text-gray-600 text-sm mb-1">Emails</p>
-              <p className="text-3xl font-bold text-indigo-600">
+              <p className="text-3xl font-bold text-primary-600">
                 {stats.email_copy_count + stats.email_send_count}
               </p>
             </div>

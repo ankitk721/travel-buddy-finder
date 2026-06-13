@@ -111,7 +111,7 @@ export default function AirportAutocomplete({
         }}
         required={required}
         placeholder={placeholder}
-        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900"
         autoComplete="off"
       />
 
@@ -122,14 +122,14 @@ export default function AirportAutocomplete({
               key={`${airport.code}-${index}`}
               type="button"
               onClick={() => handleSelectAirport(airport)}
-              className={`w-full text-left px-4 py-3 hover:bg-indigo-50 transition ${
-                index === selectedIndex ? 'bg-indigo-50' : ''
+              className={`w-full text-left px-4 py-3 hover:bg-primary-50 transition ${
+                index === selectedIndex ? 'bg-primary-50' : ''
               }`}
             >
               <div className="flex justify-between items-start">
                 <div>
                   <div className="font-semibold text-gray-900">
-                    {airport.city} <span className="text-indigo-600">({airport.code})</span>
+                    {airport.city} <span className="text-primary-600">({airport.code})</span>
                   </div>
                   <div className="text-sm text-gray-600">{airport.name}</div>
                 </div>

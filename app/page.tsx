@@ -61,14 +61,14 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="min-h-screen flex items-center justify-center bg-canvas">
         <p className="text-xl text-gray-600">Loading...</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-canvas">
       {/* Navigation */}
       <Navigation />
 
@@ -83,8 +83,8 @@ export default function Home() {
 
         {/* Stats Bar */}
         <div className="text-center text-gray-600 mb-8">
-          <span className="font-semibold text-indigo-600">{stats.activeTrips}</span> active trips • 
-          <span className="font-semibold text-indigo-600 ml-1">{stats.thisWeek}</span> posted this week
+          <span className="font-semibold text-primary-600">{stats.activeTrips}</span> active trips • 
+          <span className="font-semibold text-primary-600 ml-1">{stats.thisWeek}</span> posted this week
         </div>
 
         {/* CTA Buttons - Update spacing */}
@@ -92,13 +92,13 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/trips"
-              className="w-full sm:w-auto bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition text-center"
+              className="w-full sm:w-auto bg-primary-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-primary-700 transition text-center"
             >
               Browse Trips
             </Link>
             <Link
               href="/trips/new"
-              className="w-full sm:w-auto bg-white text-indigo-600 px-8 py-4 rounded-lg text-lg font-semibold border-2 border-indigo-600 hover:bg-indigo-50 transition text-center"
+              className="w-full sm:w-auto bg-white text-primary-600 px-8 py-4 rounded-lg text-lg font-semibold border-2 border-primary-600 hover:bg-primary-50 transition text-center"
             >
               Post a Trip
             </Link>
@@ -107,13 +107,13 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/trips"
-              className="w-full sm:w-auto bg-indigo-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition text-center"
+              className="w-full sm:w-auto bg-primary-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-primary-700 transition text-center"
             >
               Browse Trips
             </Link>
             <Link
               href="/signup"
-              className="w-full sm:w-auto bg-white text-indigo-600 px-8 py-4 rounded-lg text-lg font-semibold border-2 border-indigo-600 hover:bg-indigo-50 transition text-center"
+              className="w-full sm:w-auto bg-white text-primary-600 px-8 py-4 rounded-lg text-lg font-semibold border-2 border-primary-600 hover:bg-primary-50 transition text-center"
             >
               Get Started - It's Free
             </Link>
@@ -177,7 +177,7 @@ export default function Home() {
         </div>
 
         {/* Use Case Example */}
-        <div className="mt-12 p-6 bg-indigo-50 rounded-lg border border-indigo-200">
+        <div className="mt-12 p-6 bg-primary-50 rounded-lg border border-primary-200">
           <p className="text-gray-700 italic">
             "Planning your mother's trip from Mumbai to San Francisco? Find other families with parents traveling the same week."
           </p>

@@ -9,7 +9,7 @@ export const metadata = {
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-canvas">
       <Navigation />
       
       <main className="max-w-4xl mx-auto px-4 py-12">
@@ -93,7 +93,7 @@ export default function TermsPage() {
                 <li>Consent to your information being visible to authenticated users</li>
                 <li>Understand we cannot control how others use your contact information</li>
                 <li>Acknowledge you can delete your trips and account at any time</li>
-                <li>Agree to our <Link href="/privacy" className="text-indigo-600 hover:underline">Privacy Policy</Link></li>
+                <li>Agree to our <Link href="/privacy" className="text-primary-600 hover:underline">Privacy Policy</Link></li>
               </ul>
             </section>
 
@@ -186,12 +186,12 @@ export default function TermsPage() {
                 If you have questions about these Terms of Service, please contact us at:
               </p>
               <p className="text-gray-700 mt-3">
-                <a href="mailto:support@travel-buddy-finder.com" className="text-indigo-600 hover:underline font-medium">
+                <a href="mailto:support@travel-buddy-finder.com" className="text-primary-600 hover:underline font-medium">
                   support@travel-buddy-finder.com
                 </a>
               </p>
               <p className="text-gray-700 mt-3">
-                Or visit our <Link href="/contact" className="text-indigo-600 hover:underline">Contact Us</Link> page.
+                Or visit our <Link href="/contact" className="text-primary-600 hover:underline">Contact Us</Link> page.
               </p>
             </section>
 

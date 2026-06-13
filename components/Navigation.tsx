@@ -48,14 +48,14 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link href="/" className="text-lg sm:text-xl md:text-2xl font-bold text-indigo-600 flex-shrink-0">
+          <Link href="/" className="text-lg sm:text-xl md:text-2xl font-bold text-primary-600 flex-shrink-0">
             Travel Buddy Finder
           </Link>
           
           {/* Mobile Menu Button */}
           <button 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-gray-700 hover:text-indigo-600 focus:outline-none"
+            className="md:hidden p-2 text-gray-700 hover:text-primary-600 focus:outline-none"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? (
@@ -73,8 +73,8 @@ export default function Navigation() {
           <div className="hidden md:flex items-center gap-6">
             <Link 
               href="/trips" 
-              className={`text-gray-700 hover:text-indigo-600 font-medium transition ${
-                isActive('/trips') ? 'text-indigo-600 border-b-2 border-indigo-600 pb-1' : ''
+              className={`text-gray-700 hover:text-primary-600 font-medium transition ${
+                isActive('/trips') ? 'text-primary-600 border-b-2 border-primary-600 pb-1' : ''
               }`}
             >
               Browse Trips
@@ -84,15 +84,15 @@ export default function Navigation() {
               <>
                 <Link 
                   href="/my-trips" 
-                  className={`text-gray-700 hover:text-indigo-600 font-medium transition ${
-                    isActive('/my-trips') ? 'text-indigo-600 border-b-2 border-indigo-600 pb-1' : ''
+                  className={`text-gray-700 hover:text-primary-600 font-medium transition ${
+                    isActive('/my-trips') ? 'text-primary-600 border-b-2 border-primary-600 pb-1' : ''
                   }`}
                 >
                   My Trips
                 </Link>
                 <Link
                   href="/trips/new"
-                  className="text-indigo-600 hover:text-indigo-700 font-semibold border-2 border-indigo-600 px-4 py-1.5 rounded-lg hover:bg-indigo-50 transition whitespace-nowrap"
+                  className="text-primary-600 hover:text-primary-700 font-semibold border-2 border-primary-600 px-4 py-1.5 rounded-lg hover:bg-primary-50 transition whitespace-nowrap"
                 >
                   + Post Trip
                 </Link>
@@ -109,7 +109,7 @@ export default function Navigation() {
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="text-gray-700 hover:text-indigo-600 text-sm font-medium underline"
+                  className="text-gray-700 hover:text-primary-600 text-sm font-medium underline"
                 >
                   Logout
                 </button>
@@ -117,7 +117,7 @@ export default function Navigation() {
             ) : (
               <Link
                 href="/login"
-                className="text-gray-700 hover:text-indigo-600 font-medium"
+                className="text-gray-700 hover:text-primary-600 font-medium"
               >
                 Login
               </Link>
@@ -144,8 +144,8 @@ export default function Navigation() {
             <Link 
               href="/trips" 
               onClick={() => setMobileMenuOpen(false)}
-              className={`block py-2 px-3 rounded-lg hover:bg-indigo-50 transition ${
-                isActive('/trips') ? 'bg-indigo-50 text-indigo-600 font-semibold' : 'text-gray-700'
+              className={`block py-2 px-3 rounded-lg hover:bg-primary-50 transition ${
+                isActive('/trips') ? 'bg-primary-50 text-primary-600 font-semibold' : 'text-gray-700'
               }`}
             >
               Browse Trips
@@ -156,8 +156,8 @@ export default function Navigation() {
                 <Link 
                   href="/my-trips" 
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`block py-2 px-3 rounded-lg hover:bg-indigo-50 transition ${
-                    isActive('/my-trips') ? 'bg-indigo-50 text-indigo-600 font-semibold' : 'text-gray-700'
+                  className={`block py-2 px-3 rounded-lg hover:bg-primary-50 transition ${
+                    isActive('/my-trips') ? 'bg-primary-50 text-primary-600 font-semibold' : 'text-gray-700'
                   }`}
                 >
                   My Trips
@@ -165,7 +165,7 @@ export default function Navigation() {
                 <Link 
                   href="/trips/new" 
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block py-3 bg-indigo-600 text-white rounded-lg text-center font-semibold hover:bg-indigo-700 transition"
+                  className="block py-3 bg-primary-600 text-white rounded-lg text-center font-semibold hover:bg-primary-700 transition"
                 >
                   + Post a Trip
                 </Link>

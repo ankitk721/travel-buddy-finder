@@ -123,12 +123,12 @@ export default function NewTrip() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-canvas">
       <Navigation />
 
       <main className="max-w-2xl mx-auto px-4 py-8">
         <div className="mb-4">
-          <Link href="/trips" className="text-indigo-600 hover:text-indigo-800 font-medium">
+          <Link href="/trips" className="text-primary-600 hover:text-primary-800 font-medium">
             ← Back to Trips
           </Link>
         </div>
@@ -183,7 +183,7 @@ export default function NewTrip() {
                         .join(' ');
                     }}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900"
                     placeholder="Your full name"
                   />
                   <p className="text-xs text-gray-500 mt-1">
@@ -200,7 +200,7 @@ export default function NewTrip() {
                     value={formData.my_phone}
                     maxLength={20}
                     onChange={(e) => handleChange('my_phone', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900"
                     placeholder="+1 (555) 123-4567"
                   />
                   <p className="text-xs text-gray-500 mt-1">
@@ -239,7 +239,7 @@ export default function NewTrip() {
                         .join(' ');
                     }}
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900"
                     placeholder="e.g., Mom, Dad, Rajesh Kumar"
                   />
                 </div>
@@ -254,7 +254,7 @@ export default function NewTrip() {
                     onChange={(e) => handleChange('traveler_age', e.target.value)}
                     min="18"
                     max="120"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900"
                     placeholder="e.g., 68"
                   />
                 </div>
@@ -271,7 +271,7 @@ export default function NewTrip() {
                         onClick={() => toggleArrayItem('traveler_languages', lang)}
                         className={`px-4 py-2 rounded-full text-sm font-medium transition ${
                           formData.traveler_languages.includes(lang)
-                            ? 'bg-indigo-600 text-white'
+                            ? 'bg-primary-600 text-white'
                             : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                         }`}
                       >
@@ -351,7 +351,7 @@ export default function NewTrip() {
                         value={formData.flight_date}
                         onChange={(e) => handleChange('flight_date', e.target.value)}
                         min={new Date().toISOString().split('T')[0]}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900"
                       />
                     </div>
 
@@ -364,7 +364,7 @@ export default function NewTrip() {
                           type="text"
                           value={formData.airline}
                           onChange={(e) => handleChange('airline', e.target.value)}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900"
                           placeholder="e.g., Air India, United"
                         />
                       </div>
@@ -377,7 +377,7 @@ export default function NewTrip() {
                           type="text"
                           value={formData.flight_number}
                           onChange={(e) => handleChange('flight_number', e.target.value)}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900"
                           placeholder="e.g., AI 173"
                         />
                       </div>
@@ -400,7 +400,7 @@ export default function NewTrip() {
                           value={formData.date_range_start}
                           onChange={(e) => handleChange('date_range_start', e.target.value)}
                           min={new Date().toISOString().split('T')[0]}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900"
                         />
                       </div>
 
@@ -413,7 +413,7 @@ export default function NewTrip() {
                           value={formData.date_range_end}
                           onChange={(e) => handleChange('date_range_end', e.target.value)}
                           min={formData.date_range_start || new Date().toISOString().split('T')[0]}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900"
                         />
                       </div>
                     </div>
@@ -482,7 +482,7 @@ export default function NewTrip() {
                     onClick={() => toggleArrayItem('needs_help_with', item.value)}
                     className={`px-4 py-2 rounded-full text-sm font-medium transition ${
                       formData.needs_help_with.includes(item.value)
-                        ? 'bg-indigo-600 text-white'
+                        ? 'bg-primary-600 text-white'
                         : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                     }`}
                   >
@@ -502,7 +502,7 @@ export default function NewTrip() {
                 maxLength={100}
                 onChange={(e) => handleChange('notes', e.target.value)}
                 rows={4}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900"
                 placeholder="Any other information that would help find a good match..."
               />
             </div>
@@ -531,7 +531,7 @@ export default function NewTrip() {
                   <input
                     type="checkbox"
                     required
-                    className="mt-1 w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                    className="mt-1 w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
                     onChange={(e) => setConsentGiven(e.target.checked)}
                   />
                   <span className="text-sm text-gray-700 group-hover:text-gray-900">
@@ -544,7 +544,7 @@ export default function NewTrip() {
                   <input
                     type="checkbox"
                     required
-                    className="mt-1 w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                    className="mt-1 w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
                     onChange={(e) => setTermsAccepted(e.target.checked)}
                   />
                   <span className="text-sm text-gray-700 group-hover:text-gray-900">
@@ -552,7 +552,7 @@ export default function NewTrip() {
                     <a 
                       href="/terms" 
                       target="_blank"
-                      className="text-indigo-600 hover:underline font-medium"
+                      className="text-primary-600 hover:underline font-medium"
                     >
                       Terms of Service
                     </a>
@@ -560,7 +560,7 @@ export default function NewTrip() {
                     <a 
                       href="/privacy" 
                       target="_blank"
-                      className="text-indigo-600 hover:underline font-medium"
+                      className="text-primary-600 hover:underline font-medium"
                     >
                       Privacy Policy
                     </a>
@@ -572,7 +572,7 @@ export default function NewTrip() {
                   <input
                     type="checkbox"
                     required
-                    className="mt-1 w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                    className="mt-1 w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
                     onChange={(e) => setAccuracyConfirmed(e.target.checked)}
                   />
                   <span className="text-sm text-gray-700 group-hover:text-gray-900">
@@ -584,7 +584,7 @@ export default function NewTrip() {
             <button
               type="submit"
               disabled={loading || !consentGiven || !termsAccepted || !accuracyConfirmed}
-              className="w-full bg-indigo-600 text-white py-4 rounded-lg font-semibold hover:bg-indigo-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed text-lg"
+              className="w-full bg-primary-600 text-white py-4 rounded-lg font-semibold hover:bg-primary-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed text-lg"
             >
               {loading ? 'Posting Trip...' : 'Post Trip'}
             </button>
