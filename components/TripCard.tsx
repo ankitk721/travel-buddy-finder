@@ -120,7 +120,7 @@ const HELP_META: Record<string, { label: string; Icon: (p: IconProps) => React.R
 }
 
 const VARIANT_META: Record<TripCardVariant, { accent: string; badge: string; label: string; showStar: boolean }> = {
-  own: { accent: 'border-l-4 border-primary-500', badge: 'bg-primary-50 text-primary-700', label: 'Your trip', showStar: false },
+  own: { accent: 'border-l-4 border-primary-500', badge: 'bg-primary-100 text-primary-800', label: 'Your trip', showStar: false },
   volunteer: { accent: 'border-l-4 border-helper-500', badge: 'bg-helper-50 text-helper-800', label: 'Willing to help', showStar: true },
   seeking: { accent: 'border-l-4 border-seeker-500', badge: 'bg-seeker-50 text-seeker-800', label: 'Looking for a companion', showStar: false },
 }
@@ -171,11 +171,15 @@ export default function TripCard({ trip, variant, isPast, isSignedIn, compact = 
         ? 'Posted by'
         : 'Traveling'
 
+  const isOwn = variant === 'own'
+
   const cardClasses = [
-    'rounded-xl bg-white overflow-hidden border transition',
+    'rounded-xl overflow-hidden border transition',
     isPast
-      ? 'border-stone-200 border-l-4 border-l-stone-300 opacity-70'
-      : `border-stone-200 shadow-sm hover:shadow-md ${meta.accent}`,
+      ? 'bg-white border-stone-200 border-l-4 border-l-stone-300 opacity-70'
+      : isOwn
+        ? `bg-primary-50 border-primary-200 shadow-sm hover:shadow-md ${meta.accent}`
+        : `bg-white border-stone-200 shadow-sm hover:shadow-md ${meta.accent}`,
   ].join(' ')
 
   const Route = (
@@ -296,12 +300,12 @@ export default function TripCard({ trip, variant, isPast, isSignedIn, compact = 
         {/* Action */}
         <div className="mt-4">
           {variant === 'own' ? (
-            <div className="rounded-lg border border-primary-100 bg-primary-50 p-3 text-center">
-              <p className="mb-1 text-sm font-medium text-primary-800">Your trip</p>
-              <Link href="/my-trips" className="text-xs font-semibold text-primary-700 underline">
-                Manage →
-              </Link>
-            </div>
+            <Link
+              href="/my-trips"
+              className="block w-full rounded-lg border border-primary-300 bg-white py-2.5 text-center text-sm font-semibold text-primary-700 transition hover:bg-primary-100"
+            >
+              Manage trip →
+            </Link>
           ) : isPast ? (
             <div className="rounded-lg border border-stone-200 bg-stone-50 p-3 text-center">
               <p className="text-sm text-stone-500">Trip has ended</p>
